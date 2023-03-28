@@ -1,5 +1,6 @@
 import { UserTypeEnum } from '@prisma/client';
 import * as Joi from 'joi';
+import * as bcrypt from 'bcrypt';
 import Database from '../config/Database';
 import JoiCustomError from '../errors/JoiCustomError';
 import UserService from '../services/User.service';
@@ -199,3 +200,43 @@ export const _delete = Joi.object().keys({
 				throw new JoiCustomError(`Não existe um usuário com id ${value}`, 'id');
 		}),
 });
+
+export const login = Joi.object().keys({
+	email: Joi
+		.string()
+		.required()
+		.email()
+		.messages({
+			'string.base': 'Email é inválido',
+			'string.email': 'Email é inválido',
+			'any.required':'Email é obrigatório',
+		})
+		.external(async (value) => {
+			const user = await Database.getInstance().getDatabase().user.findUnique({
+				where: {
+					email: value,
+				},
+			});
+
+			if (!user)
+				throw new JoiCustomError('Email inválido', 'email');
+		}),
+
+	password: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Senha é inválida',
+			'any.required':'Senha é obrigatória',
+		})
+		.external(async (value) => {
+			const user = await Database.getInstance().getDatabase().user.findUnique({
+				where: {
+					email: value,
+				},
+			});
+
+			if (user && !bcrypt.compareSync(value, user.password))
+				throw new JoiCustomError('Senha inválida', 'password');
+		}),
+}).options({ abortEarly: false, });

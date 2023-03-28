@@ -4,6 +4,10 @@ declare global {
             SERVER_URL: string;
 			PORT: number;
 			DATABASE_URL: string;
+			JWT_SECRET: string;
+		}
+		export interface Request {
+			user: any
 		}
 	}
 }

@@ -101,6 +101,26 @@ class UserController {
 			return res.status(500).send({ message, });
 		}
 	}
+
+	public async login(req: Request, res: Response): Promise<Response> {
+		logger.info(`Chamando login de ${req.originalUrl}`);
+
+		const { email, } = req.body;
+
+		try {
+			const { token, user, } = await UserService.login(email);
+			
+			const message = 'Usuário logado com sucesso';
+			logger.info(message);
+
+			return res.status(200).send({ message, token, user, });
+		} catch(e) {
+			const message = 'Ocorreram erros internos ao logar usuário';
+			logger.error(e);
+
+			return res.status(500).send({ message, });
+		}
+	}
 }
 
 export default new UserController();

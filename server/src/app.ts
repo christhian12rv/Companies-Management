@@ -4,6 +4,7 @@ import logger from './config/logger';
 import config from './config/config';
 import userRoute from './routes/User.route';
 import employeeRoute from './routes/Employee.route';
+import companyRoute from './routes/Company.route';
 
 export default class App {
 	private express: express.Application;
@@ -35,5 +36,6 @@ export default class App {
 	private routes(): void {
 		this.express.use('/api/user', userRoute);
 		this.express.use('/api/employee', employeeRoute);
+		this.express.use('/api/company', companyRoute);
 	}
 }

@@ -24,10 +24,10 @@ class CompanyController {
 	public async findById(req: Request, res: Response): Promise<Response> {
 		logger.info(`Chamando findById de ${req.originalUrl}`);
 
-		const { id, } = req.body;
+		const { id, } = req.params;
 
 		try {
-			const company = await CompanyService.findById(id);
+			const company = await CompanyService.findById(Number(id));
 			
 			const message = 'Empresa buscado com sucesso';
 			logger.info(message);
@@ -44,7 +44,7 @@ class CompanyController {
 	public async create(req: Request, res: Response): Promise<Response> {
 		logger.info(`Chamando create de ${req.originalUrl}`);
 
-		const { data, } = req.body;
+		const data = req.body;
 
 		try {
 			const company = await CompanyService.create(data);
@@ -64,10 +64,11 @@ class CompanyController {
 	public async update(req: Request, res: Response): Promise<Response> {
 		logger.info(`Chamando update de ${req.originalUrl}`);
 
-		const { id, data, } = req.body;
+		const { id, } = req.params;
+		const data = req.body;
 
 		try {
-			const company = await CompanyService.update(id, data);
+			const company = await CompanyService.update(Number(id), data);
 			
 			const message = 'Empresa atualizado com sucesso';
 			logger.info(message);
@@ -84,10 +85,10 @@ class CompanyController {
 	public async delete(req: Request, res: Response): Promise<Response> {
 		logger.info(`Chamando delete de ${req.originalUrl}`);
 
-		const { id, } = req.body;
+		const { id, } = req.params;
 
 		try {
-			const company = await CompanyService.delete(id);
+			const company = await CompanyService.delete(Number(id));
 			
 			const message = 'Empresa criado com sucesso';
 			logger.info(message);

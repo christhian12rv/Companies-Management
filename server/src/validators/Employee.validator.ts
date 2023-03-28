@@ -1,6 +1,5 @@
 import * as Joi from 'joi';
 import Database from '../config/Database';
-import logger from '../config/logger';
 import JoiCustomError from '../errors/JoiCustomError';
 import CompanyService from '../services/Company.service';
 import EmployeeService from '../services/Employee.service';
@@ -39,7 +38,6 @@ export const create = Joi.object().keys({
 			'any.required':'Empresa é obrigatória',
 		})
 		.external(async (value) => {
-			logger.info('PJDFASOFJAODSFJ');
 			const company = await CompanyService.findById(value);
 			if (!company)
 				throw new JoiCustomError(`Não existe uma empresa com id ${value}`, 'companyId');
@@ -217,6 +215,9 @@ export const update = Joi.object().keys({
 		.messages({
 			'number.base': 'Salário é inválido',
 		}),
+
+	address: AddressValidator.update
+		.optional(),
 }).options({ abortEarly : false, });
 
 

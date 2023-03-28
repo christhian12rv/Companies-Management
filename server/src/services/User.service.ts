@@ -1,5 +1,8 @@
 import { User } from '@prisma/client';
+import * as jwt from 'jsonwebtoken';
+import config from '../config/config';
 import Database from '../config/Database';
+import UserAuth from '../types/User/UserAuth';
 import UserCreate from '../types/User/UserCreate';
 import UserUpdateType from '../types/User/UserUpdate';
 
@@ -61,6 +64,18 @@ class UserService {
 		});
 
 		return user;
+	}
+
+	public async login(email: string): Promise<UserAuth> {
+		const user = await Database.getInstance().getDatabase().user.findUnique({
+			where: {
+				email,
+			},
+		});
+
+		const token = await jwt.sign({ id: user.id, }, config.jwtSecret);
+
+		return { user, token, };
 	}
 }
 

@@ -6,8 +6,9 @@ const userRoute = Router();
 
 userRoute.get('/', UserController.findAll);
 userRoute.get('/:id', UserMiddleware.findById, UserController.findById);
-userRoute.post('/', UserMiddleware.create, UserController.create);
-userRoute.put('/:id', UserMiddleware.update, UserController.update);
-userRoute.delete('/:id', UserMiddleware.delete, UserController.delete);
+userRoute.post('/', UserMiddleware.verifyAdminAuth, UserMiddleware.create, UserController.create);
+userRoute.post(':/login');
+userRoute.put('/:id', UserMiddleware.verifyAdminAuth, UserMiddleware.update, UserController.update);
+userRoute.delete('/:id', UserMiddleware.verifyAdminAuth, UserMiddleware.delete, UserController.delete);
 
 export default userRoute;
