@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserTypeEnum {
+  ADMIN
+  STANDARD
+}
+
+model User {
+  id        Int          @id @default(autoincrement())
+  name      String
+  cpf       String       @unique
+  email     String       @unique
+  password  String
+  type      UserTypeEnum @default(STANDARD)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model Company {
+  id                Int        @id @default(autoincrement())
+  companyName       String     @unique
+  fantasyName       String
+  cnpj              String     @unique
+  stateRegistration String?
+  address           Address    @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId         Int
+  employee          Employee[]
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+}
+
+model Address {
+  id           Int        @id @default(autoincrement())
+  street       String
+  number       Int
+  complement   String?   
+  neighborhood String
+  city         String
+  uf           String
+  cep          String
+  company      Company[]
+  employee     Employee[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Employee {
+  id               Int      @id @default(autoincrement())
+  name             String
+  company          Company  @relation(fields: [companyId], references: [id])
+  companyId        Int
+  dependentsNumber Int
+  rg               String   @unique
+  cpf              String   @unique
+  address          Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  addressId        Int
+  salary           Float
+  descount         Float
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

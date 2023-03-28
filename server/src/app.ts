@@ -1,8 +1,9 @@
-import 'reflect-metadata';
 import * as express from 'express';
 import * as cors from 'cors';
 import logger from './config/logger';
 import config from './config/config';
+import userRoute from './routes/User.route';
+import employeeRoute from './routes/Employee.route';
 
 export default class App {
 	private express: express.Application;
@@ -32,6 +33,7 @@ export default class App {
 	}
 
 	private routes(): void {
-		// this.express.use('/teams', teamRoute);
+		this.express.use('/api/user', userRoute);
+		this.express.use('/api/employee', employeeRoute);
 	}
 }

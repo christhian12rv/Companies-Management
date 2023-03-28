@@ -1,11 +1,13 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/eslint-recommended"
     ],
     "overrides": [
     ],
@@ -18,10 +20,7 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
+        "indent": ["error", "tab", { "ignoredNodes": ["PropertyDefinition"] }],
         "linebreak-style": [
             "error",
             "unix"
@@ -33,6 +32,30 @@
         "semi": [
             "error",
             "always"
+        ],
+        "comma-dangle": [
+            "error",
+            {
+                "objects": "always"
+            }
+        ],
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "object-curly-spacing": [
+            "error",
+            "always"
+        ],
+        "no-console": 2,
+        "curly": [
+            "error",
+            "multi-or-nest"
+        ],
+        "@typescript-eslint/explicit-function-return-type": 2,
+        "arrow-body-style": [
+            "error",
+            "as-needed"
         ]
     }
 }
