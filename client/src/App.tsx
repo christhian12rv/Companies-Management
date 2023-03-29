@@ -12,6 +12,8 @@ import { SnackbarProviderCustom } from './components/SnackbarProvider';
 import { Provider } from 'react-redux';
 import store from './store';
 import { Login } from './pages/Login';
+import { ListUser } from './pages/ListUser';
+import { VerifyAuth } from './components/utils/VerifyAuth/VerifyAuth';
 
 export const App: React.FunctionComponent = () => {
 	return (
@@ -21,8 +23,11 @@ export const App: React.FunctionComponent = () => {
 				<SnackbarProviderCustom />
 				<BrowserRouter>
 					<Routes>
-						<Route element={<MainLayout />} >
-							<Route path={RoutesEnum.USER_REGISTER} element={<AddUser />} />
+						<Route element={<VerifyAuth />}>
+							<Route element={<MainLayout />} >
+								<Route path={RoutesEnum.USER_REGISTER} element={<AddUser />} />
+								<Route path={RoutesEnum.USER_LIST} element={<ListUser />} />
+							</Route>
 						</Route>
 
 						<Route path={RoutesEnum.LOGIN} element={<Login />} />

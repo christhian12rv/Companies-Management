@@ -47,6 +47,13 @@ export const register = (user: UserRegisterType): (dispatch: Dispatch<UserAction
 	};
 };
 
+export const findAll = async (): Promise<[Response, any]> => {
+	const response = await fetch('/api/user');
+	const json = await response.json();
+	
+	return [response, json];
+};
+
 export const clearRequest = (): (dispatch: Dispatch<UserAction>) => Promise<void> => {
 	return async (dispatch: Dispatch<UserAction>): Promise<void> => {
 		dispatch({ type: UserActionsTypes.CLEAR_REQUEST, });

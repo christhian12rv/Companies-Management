@@ -1,6 +1,6 @@
 import { Box, CssBaseline, Slide, Toolbar, useMediaQuery, useScrollTrigger } from '@mui/material';
 import React, { useState } from 'react';
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import LocalStorageEnum from '../../../types/enums/LocalStorageEnum';
 import ScreenSizeQuerysEnum from '../../../types/enums/ScreenSizeQuerysEnum';
 import { AppBarContent } from './AppBarContent';

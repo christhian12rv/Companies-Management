@@ -7,8 +7,17 @@ const initialState: UserState = {
 };
 
 const userReducer = (state = initialState, action: UserAction): UserState => {
-	console.log('ACTION', action);
 	switch (action.type) {
+	case UserActionsTypes.FIND_ALL_PENDING: {
+		return { ...state, ...action.payload, previousType: action.type, loading: true, };
+	}
+	case UserActionsTypes.FIND_ALL_SUCCESS: {
+		return { ...state, ...action.payload, previousType: action.type, loading: false, };
+	}
+	case UserActionsTypes.FIND_ALL_FAIL: {
+		return { ...state, ...action.payload, previousType: action.type, loading: false, };
+	}
+
 	case UserActionsTypes.REGISTER_PENDING: {
 		return { ...state, ...action.payload, previousType: action.type, loading: true, };
 	}
@@ -18,7 +27,6 @@ const userReducer = (state = initialState, action: UserAction): UserState => {
 	case UserActionsTypes.REGISTER_FAIL: {
 		return { ...state, ...action.payload, previousType: action.type, loading: false, };
 	}
-
 
 	case UserActionsTypes.CLEAR_REQUEST: {
 		return { ...state, request: null, loading: false, previousType: action.type, };

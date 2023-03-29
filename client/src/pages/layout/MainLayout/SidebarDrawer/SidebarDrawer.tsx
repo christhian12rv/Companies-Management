@@ -6,76 +6,81 @@ import { DrawerHeader } from '../MainLayout.styled';
 import { ListItemButtonStyled, ListSubItemButtonStyled, LogoTitle } from './SidebarDrawer.styled';
 import RoutesEnum from '../../../../types/enums/RoutesEnum';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { logout as logoutAction } from '../../../../store/features/auth/auth.actions';
 
 type SidebarDrawerProps = {
 	openSidebar: boolean;
 	isMobile: boolean;
 }
 
-const sidebarListItems = [
-	{
-		name: 'user',
-		title: 'Usuários',
-		icon:	<GroupRounded className="icon" />,
-		items: [
-			{
-				title: 'Registrar Usuário',
-				icon: <GroupAddRounded className="icon"/>,
-				link: RoutesEnum.USER_REGISTER,
-			},
-			{
-				title: 'Listar Usuários',
-				icon: <GroupRounded className="icon"/>,
-				link: RoutesEnum.USER_LIST,
-			}
-		],
-	},
-	{
-		name: 'company',
-		title: 'Empresas',
-		icon:	<DomainRounded className="icon"/>,
-		items: [
-			{
-				title: 'Adicionar Empresa',
-				icon: <DomainAddRounded className="icon"/>,
-				link: RoutesEnum.COMPANY_REGISTER,
-			},
-			{
-				title: 'Listar Empresas',
-				icon: <DomainRounded className="icon"/>,
-				link: RoutesEnum.COMPANY_LIST,
-			}
-		],
-	},
-	{
-		name: 'employee',
-		title: 'Funcionários',
-		icon:	<AssignmentIndRounded className="icon"/>,
-		items: [
-			{
-				title: 'Adicionar Funcionário',
-				icon: <GroupAddRounded className="icon"/>,
-				link: RoutesEnum.EMPLOYEE_REGISTER,
-			},
-			{
-				title: 'Listar Funcionários',
-				icon: <GroupRounded className="icon"/>,
-				link: RoutesEnum.EMPLOYEE_LIST,
-			}
-		],
-	},
-	{
-		name: 'logout',
-		title: 'Logout',
-		icon:	<PowerSettingsNewRounded className="icon"/>,
-		bottom: true,
-	}
-];
-
 export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ openSidebar, isMobile, }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [expandedItems, setExpandedItems] = useState<{ name: string; expanded: boolean; }[]>([]);
+
+	const sidebarListItems = [
+		{
+			name: 'user',
+			title: 'Usuários',
+			icon:	<GroupRounded className="icon" />,
+			items: [
+				{
+					title: 'Registrar Usuário',
+					icon: <GroupAddRounded className="icon"/>,
+					link: RoutesEnum.USER_REGISTER,
+				},
+				{
+					title: 'Listar Usuários',
+					icon: <GroupRounded className="icon"/>,
+					link: RoutesEnum.USER_LIST,
+				}
+			],
+		},
+		{
+			name: 'company',
+			title: 'Empresas',
+			icon:	<DomainRounded className="icon"/>,
+			items: [
+				{
+					title: 'Adicionar Empresa',
+					icon: <DomainAddRounded className="icon"/>,
+					link: RoutesEnum.COMPANY_REGISTER,
+				},
+				{
+					title: 'Listar Empresas',
+					icon: <DomainRounded className="icon"/>,
+					link: RoutesEnum.COMPANY_LIST,
+				}
+			],
+		},
+		{
+			name: 'employee',
+			title: 'Funcionários',
+			icon:	<AssignmentIndRounded className="icon"/>,
+			items: [
+				{
+					title: 'Adicionar Funcionário',
+					icon: <GroupAddRounded className="icon"/>,
+					link: RoutesEnum.EMPLOYEE_REGISTER,
+				},
+				{
+					title: 'Listar Funcionários',
+					icon: <GroupRounded className="icon"/>,
+					link: RoutesEnum.EMPLOYEE_LIST,
+				}
+			],
+		},
+		{
+			name: 'logout',
+			title: 'Logout',
+			icon:	<PowerSettingsNewRounded className="icon"/>,
+			bottom: true,
+			onClick: (): any => {
+				logoutAction();
+				navigate(RoutesEnum.LOGIN);
+			},
+		}
+	];
 
 	useEffect(() => {
 		setExpandedItems(sidebarListItems.map(item => ({
@@ -83,10 +88,6 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 			expanded: false,
 		})));
 	}, []);
-
-	// const handleExpandedChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-	// 	setExpanded(newExpanded ? panel : false);
-	// };
 
 	const handleExpandedChange = (name): void => {
 		const newExpandedItems = expandedItems.map(item => {
@@ -125,7 +126,8 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 								!!sidebarItem.items.find(item => item.link === location.pathname)
 							) : false}
 							sx={{ ...(sidebarItem.bottom && { mt: 'auto', }), }}
-							onClick={sidebarItem.items ? (): any => handleExpandedChange(sidebarItem.name) : undefined}>
+							onClick={sidebarItem.onClick ? sidebarItem.onClick :
+								(sidebarItem.items ? (): any => handleExpandedChange(sidebarItem.name) : undefined)}>
 							<ListItemIcon sx={{ ml: '-3px', minWidth: '50px', }}>
 								{sidebarItem.icon}
 							</ListItemIcon>
