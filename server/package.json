@@ -4,7 +4,9 @@
   "description": "A api for Company Management web app",
   "main": "index.js",
   "scripts": {
-    "start": "eslint . --ext .ts && ts-node-dev --respawn src/index.ts",
+    "dev": "eslint . --ext .ts && ts-node-dev --respawn src/index.ts",
+    "client": "cd ../client && npm run dev",
+    "both:dev": "concurrently --kill-others-on-fail \"npm run dev\" \"npm run client\"",
     "test": "NODE_ENV=test ENV_FILE=./src/.env jest --runInBand --forceExit"
   },
   "author": "Christhian Rezende Vieira",

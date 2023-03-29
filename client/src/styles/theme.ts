@@ -47,18 +47,18 @@ declare module '@mui/material/styles' {
 	}
 }
 
-export default createTheme({
+const theme = createTheme({
 	palette: {
 		primary: {
-			main: '#ffb1c6',
-			dark: '#ff94b1',
-			darker: '#ff7c9f',
-			light: '#ffd4e0',
-			lighter: '#ffedf2',
+			main: '#10B981',
+			dark: '#059669',
+			darker: '#047857',
+			light: '#34D399',
+			lighter: '#6EE7B7',
 		},
 		secondary: {
-			main: '#cb365e',
-			dark: '#c51645',
+			main: '#0EA5E9',
+			dark: '#0284C7',
 		},
 		common: {
 			black: 'rgb(22, 22, 22)',
@@ -77,3 +77,7 @@ export default createTheme({
 		},
 	},
 });
+
+export default theme;
+
+export const Theme = typeof theme;

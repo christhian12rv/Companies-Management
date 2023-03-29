@@ -34,9 +34,10 @@ class UserMiddleware {
 
 			return res.status(400).json({ errors: formatErrors(e), message, });
 		}
-
+		
 		try {
 			data.password = bcrypt.hashSync(data.password, 10);
+			req.body.data = data;
 		}catch (e) {
 			const message = 'Ocorreram erros internos ao criar usuário';
 			logger.error(e);
@@ -139,7 +140,7 @@ class UserMiddleware {
 
 		try {
 			const userToken = await jwt.verify(token, config.jwtSecret);
-			const user = await Database.getInstance().getDatabase().user.findUnique({
+			const user = await Database.getInstance().getDatabase().user.findFirst({
 				where: {
 					id: userToken.id,
 					type: UserTypeEnum.ADMIN,
@@ -154,8 +155,6 @@ class UserMiddleware {
 
 				return res.status(401).send({ message, });
 			}
-
-			next();
 		} catch (error) {
 			const message = 'Ocorreram erros internos ao verificar usuário';
 			logger.error(message);

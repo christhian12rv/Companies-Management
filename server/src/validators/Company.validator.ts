@@ -27,7 +27,7 @@ export const create = Joi.object().keys({
 		.external(async (value) => {
 			const company = await Database.getInstance().getDatabase().company.findUnique({
 				where: {
-					companyId: value,
+					companyName: value,
 				},
 			});
 			if (company)
@@ -103,7 +103,7 @@ export const update = Joi.object().keys({
 		.external(async (value) => {
 			const company = await Database.getInstance().getDatabase().company.findUnique({
 				where: {
-					companyId: value,
+					companyName: value,
 				},
 			});
 			if (company)

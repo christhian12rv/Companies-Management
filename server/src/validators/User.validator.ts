@@ -24,6 +24,7 @@ export const create = Joi.object().keys({
 		.min(2)
 		.messages({
 			'string.base': 'Nome é inválido',
+			'string.empty': 'Nome é inválido',
 			'string.min': 'Nome deve conter no mínimo 2 caracteres',
 			'any.required':'Nome é obrigatório',
 		}),
@@ -34,6 +35,7 @@ export const create = Joi.object().keys({
 		.regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)
 		.messages({
 			'string.base': 'CPF é inválido',
+			'string.empty': 'CPF é inválido',
 			'string.pattern.base': 'CPF é inválido',
 			'any.required':'CPF é obrigatório',
 		})
@@ -54,6 +56,7 @@ export const create = Joi.object().keys({
 		.email()
 		.messages({
 			'string.base': 'Email é inválido',
+			'string.empty': 'Email é inválido',
 			'string.email': 'Email é inválido',
 			'any.required':'Email é obrigatório',
 		})
@@ -74,6 +77,7 @@ export const create = Joi.object().keys({
 		.min(8)
 		.messages({
 			'string.base': 'Senha é inválida',
+			'string.empty': 'Senha é inválida',
 			'string.min': 'Senha deve ter no mínimo 8 caracteres',
 			'any.required':'Senha é obrigatória',
 		}),
@@ -84,6 +88,7 @@ export const create = Joi.object().keys({
 		.min(8)
 		.messages({
 			'string.base': 'Confirmação de senha é inválida',
+			'string.empty': 'Confirmação de senha é inválida',
 			'string.min': 'Senha deve ter no mínimo 8 caracteres',
 			'any.required':'Confirmação de senha é obrigatória',
 		}),
@@ -91,12 +96,16 @@ export const create = Joi.object().keys({
 	type: Joi
 		.string()
 		.optional()
-		.valid(UserTypeEnum)
 		.messages({
 			'string.base': 'Tipo é inválido',
-			'any.required':'Tipo é obrigatório',
+			'string.empty': 'Tipo é inválido',
+			'any.required': 'Tipo é obrigatório',
+		})
+		.external(async (value) => {
+			if (!UserTypeEnum[value])
+				throw new JoiCustomError('Tipo é inválido', 'type');
 		}),
-}).options({ abortEarly : false, });
+}).options({ abortEarly : false, allowUnknown: true, });
 
 
 export const update = Joi.object().keys({
@@ -208,6 +217,7 @@ export const login = Joi.object().keys({
 		.email()
 		.messages({
 			'string.base': 'Email é inválido',
+			'string.empty': 'Email é inválido',
 			'string.email': 'Email é inválido',
 			'any.required':'Email é obrigatório',
 		})
@@ -227,6 +237,7 @@ export const login = Joi.object().keys({
 		.required()
 		.messages({
 			'string.base': 'Senha é inválida',
+			'string.empty': 'Senha é inválida',
 			'any.required':'Senha é obrigatória',
 		})
 		.external(async (value) => {
