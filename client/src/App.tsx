@@ -15,6 +15,7 @@ import { VerifyAuth } from './components/utils/VerifyAuth/VerifyAuth';
 import { AddCompany } from './pages/AddCompany/AddCompany';
 import { ListCompanies } from './pages/ListCompanies';
 import { ThemeProviderCustom } from './components/ThemeProviderCustom';
+import { VerifyAdminAuth } from './components/utils/VerifyAdminAuth/VerifyAdminAuth';
 
 export const App: React.FunctionComponent = () => {
 	
@@ -27,10 +28,13 @@ export const App: React.FunctionComponent = () => {
 					<Routes>
 						<Route element={<VerifyAuth />}>
 							<Route element={<MainLayout />} >
-								<Route path={RoutesEnum.USER_REGISTER} element={<AddUser />} />
 								<Route path={RoutesEnum.USER_LIST} element={<ListUsers />} />
 								<Route path={RoutesEnum.COMPANY_CREATE} element={<AddCompany />} />
 								<Route path={RoutesEnum.COMPANY_LIST} element={<ListCompanies />} />
+
+								<Route element={<VerifyAdminAuth />}>
+									<Route path={RoutesEnum.USER_REGISTER} element={<AddUser />} />
+								</Route>
 							</Route>
 						</Route>
 

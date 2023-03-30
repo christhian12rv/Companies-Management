@@ -4,12 +4,16 @@ import { useTypedSelector } from '../../store/utils/useTypedSelector';
 import theme from '../../styles/theme';
 import themeDark from '../../styles/themeDark';
 
-export const ThemeProviderCustom: React.FunctionComponent<ThemeProviderProps> = (props) => {
+type ThemeProviderCustomProps = {
+	children: any;
+};
+
+export const ThemeProviderCustom: React.FunctionComponent<ThemeProviderCustomProps> = ({ children, }) => {
 	const { darkMode, } = useTypedSelector((state) => state.auth);
 	
 	return (
 		<ThemeProvider theme={darkMode === 'dark' ? themeDark : theme}>
-			{props.children}
+			{children}
 		</ThemeProvider>
 	);
 };
