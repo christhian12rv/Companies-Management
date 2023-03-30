@@ -5,7 +5,10 @@ import AddressCreate from '../types/Address/AddressCreate';
 class AddressService {
 	public async create(data: AddressCreate): Promise<Address> {
 		const address = await Database.getInstance().getDatabase().address.create({
-			data,
+			data: {
+				...data,
+				number: Number(data.number),
+			},
 		});
 
 		return address;
@@ -19,7 +22,7 @@ class AddressService {
 			},
 			data: {
 				...(!!street && { street, }),
-				...(!!number && { number, }),
+				...(!!number && { number: Number(number), }),
 				...(!!complement && { complement, }),
 				...(!!neighborhood && { neighborhood, }),
 				...(!!city && { city, }),

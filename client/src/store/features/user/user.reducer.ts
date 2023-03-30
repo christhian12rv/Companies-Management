@@ -28,6 +28,16 @@ const userReducer = (state = initialState, action: UserAction): UserState => {
 		return { ...state, ...action.payload, previousType: action.type, loading: false, };
 	}
 
+	case UserActionsTypes.UPDATE_PENDING: {
+		return { ...state, ...action.payload, previousType: action.type, loading: true, };
+	}
+	case UserActionsTypes.UPDATE_SUCCESS: {
+		return { ...state, ...action.payload, previousType: action.type, loading: false, };
+	}
+	case UserActionsTypes.UPDATE_FAIL: {
+		return { ...state, ...action.payload, previousType: action.type, loading: false, };
+	}
+
 	case UserActionsTypes.CLEAR_REQUEST: {
 		return { ...state, request: null, loading: false, previousType: action.type, };
 	}

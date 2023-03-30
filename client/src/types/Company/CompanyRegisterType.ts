@@ -1,14 +1,11 @@
-import AddressType from '../Address/AddressType';
-import EmployeeRegisterType from '../Employee/EmployeeRegisterType';
+import AddressRegisterType from '../Address/AddressRegisterType';
 
 interface CompanyRegisterType {
 	companyName: string;
 	fantasyName: string;
 	cnpj: string;
 	stateRegistration: string;
-	address?: AddressType;
-	addressId: number;
-	employee?: EmployeeRegisterType[];
+	address: AddressRegisterType;
 }
 
 export default CompanyRegisterType;

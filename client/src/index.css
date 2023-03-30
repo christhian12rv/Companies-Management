@@ -8,6 +8,6 @@
 }
 
 body {
-	overflow-x: hidden;
+	overflow: hidden;
   margin: 0 !important;
 }

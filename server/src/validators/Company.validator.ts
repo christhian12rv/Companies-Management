@@ -22,6 +22,7 @@ export const create = Joi.object().keys({
 		.required()
 		.messages({
 			'string.base': 'Razão Social é inválida',
+			'string.empty': 'Razão Social é inválida',
 			'any.required':'Razão Social é obrigatória',
 		})
 		.external(async (value) => {
@@ -39,6 +40,7 @@ export const create = Joi.object().keys({
 		.required()
 		.messages({
 			'string.base': 'Nome fantasia é inválido',
+			'string.empty': 'Nome fantasia é inválido',
 			'any.required':'Nome fantasia é obrigatório',
 		}),
 
@@ -48,6 +50,7 @@ export const create = Joi.object().keys({
 		.regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/)
 		.messages({
 			'string.base': 'CNPJ é inválido',
+			'string.empty': 'CNPJ é inválido',
 			'string.pattern.base': 'CNPJ é inválido',
 			'any.required':'CNPJ é obrigatório',
 		})
@@ -65,8 +68,10 @@ export const create = Joi.object().keys({
 	stateRegistration: Joi
 		.string()
 		.optional()
+		.allow(null, '')
 		.messages({
 			'string.base': 'Inscrição estadual é inválida',
+			'string.empty': 'Inscrição estadual é inválida',
 		}),
 
 	address: AddressValidator.create
@@ -74,7 +79,7 @@ export const create = Joi.object().keys({
 		.messages({
 			'any.required': 'Endereço é obrigatório',
 		}),
-}).options({ abortEarly : false, });
+}).options({ abortEarly : false, allowUnknown: true, });
 
 
 export const update = Joi.object().keys({
@@ -99,11 +104,17 @@ export const update = Joi.object().keys({
 		.optional()
 		.messages({
 			'string.base': 'Razão Social é inválida',
+			'string.empty': 'Razão Social é inválida',
 		})
-		.external(async (value) => {
-			const company = await Database.getInstance().getDatabase().company.findUnique({
+		.external(async (value, helpers) => {
+			const company = await Database.getInstance().getDatabase().company.findFirst({
 				where: {
-					companyName: value,
+					AND: {
+						id: {
+							not: helpers.state.ancestors[0].id,
+						},
+						companyName: value,
+					},
 				},
 			});
 			if (company)
@@ -115,6 +126,7 @@ export const update = Joi.object().keys({
 		.optional()
 		.messages({
 			'string.base': 'Nome fantasia é inválido',
+			'string.empty': 'Nome fantasia é inválido',
 		}),
 
 	cnpj: Joi
@@ -123,12 +135,18 @@ export const update = Joi.object().keys({
 		.regex(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/)
 		.messages({
 			'string.base': 'CNPJ é inválido',
+			'string.empty': 'CNPJ é inválido',
 			'string.pattern.base': 'CNPJ é inválido',
 		})
-		.external(async (value) => {
-			const employee = await Database.getInstance().getDatabase().company.findUnique({
+		.external(async (value, helpers) => {
+			const employee = await Database.getInstance().getDatabase().company.findFirst({
 				where: {
-					cnpj: value,
+					AND: {
+						id: {
+							not: helpers.state.ancestors[0].id,
+						},
+						cnpj: value,
+					},
 				},
 			});
 
@@ -139,13 +157,15 @@ export const update = Joi.object().keys({
 	stateRegistration: Joi
 		.string()
 		.optional()
+		.allow(null, '')
 		.messages({
 			'string.base': 'Inscrição estadual é inválida',
+			'string.empty': 'Inscrição estadual é inválida',
 		}),
 
 	address: AddressValidator.create
 		.optional(),
-}).options({ abortEarly : false, });
+}).options({ abortEarly : false, allowUnknown: true, });
 
 
 export const _delete = Joi.object().keys({

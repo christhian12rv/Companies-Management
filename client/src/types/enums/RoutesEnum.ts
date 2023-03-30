@@ -2,10 +2,10 @@ enum RoutesEnum {
 	LOGIN = '/login',
 	USER_REGISTER = '/user/register',
 	USER_LIST = '/user/list',
-	COMPANY_REGISTER = '/company/register',
+	COMPANY_CREATE = '/company/create',
 	COMPANY_LIST = '/company/list',
-	EMPLOYEE_REGISTER = '/employee/register',
-	EMPLOYEE_LIST = '/employee/register',
+	EMPLOYEE_CREATE = '/employee/create',
+	EMPLOYEE_LIST = '/employee/create',
 }
 
 export default RoutesEnum;

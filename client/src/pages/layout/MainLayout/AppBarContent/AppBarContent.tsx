@@ -1,16 +1,19 @@
-import { MenuRounded, FullscreenRounded } from '@mui/icons-material';
-import { IconButton, Grid } from '@mui/material';
 import React from 'react';
-import { LinkUnstyled } from '../../../../components/LinkUnstyled';
-import RoutesEnum from '../../../../types/enums/RoutesEnum';
+import { MenuRounded, FullscreenRounded, DarkModeRounded } from '@mui/icons-material';
+import { IconButton, Grid } from '@mui/material';
+import { useTypedSelector } from '../../../../store/utils/useTypedSelector';
 import { UserIcon, UserName, UserType } from './AppBarContent.styled';
+import UserTypeEnum from '../../../../types/enums/User/UserTypeEnum';
 
 type AppBarContentProps = {
 	handleDrawerToggleSidebar: () => void;
 	handleToggleFullScreen: () => void;
+	handleDrawerToggleDarkMode: () => void;
 }
 
-export const AppBarContent: React.FunctionComponent<AppBarContentProps> = ({ handleDrawerToggleSidebar, handleToggleFullScreen, }) => {
+export const AppBarContent: React.FunctionComponent<AppBarContentProps> = ({ handleDrawerToggleSidebar, handleToggleFullScreen, handleDrawerToggleDarkMode, }) => {
+	const { user, } = useTypedSelector((state) => state.auth);
+	
 	return (
 		<>
 			<IconButton
@@ -37,20 +40,32 @@ export const AppBarContent: React.FunctionComponent<AppBarContentProps> = ({ han
 				<FullscreenRounded />
 			</IconButton>
 
-			<LinkUnstyled to={RoutesEnum.LOGIN} sx={{ marginLeft: 'auto', }}>
-				<Grid display="flex" alignItems="center" justifyContent="center" gap={1} sx={(theme): object => ({
-					'&:hover .user-icon, &:hover .user-name, &:hover .user-type': {
-						color: theme.palette.primary.dark,
-						transition: 'all .15s',
-					},
-				})}>
-					<UserIcon className="user-icon"/>
-					<Grid display="flex" flexDirection="column" justifyContent="center">
-						<UserName className="user-name" variant="h6">Christhian</UserName>
-						<UserType className="user-type" variant="body1">Admin</UserType>
-					</Grid>
+			<IconButton
+				color="inherit"
+				onClick={handleDrawerToggleDarkMode}
+				edge="start"
+				sx={{
+					mr: 1,
+					outline: 'none !important',
+				}}
+			>
+				<DarkModeRounded />
+			</IconButton>
+
+			<Grid display="flex" alignItems="center" justifyContent="center" gap={1} sx={(theme): object => ({
+				ml: 'auto',
+				'&:hover .user-icon, &:hover .user-name, &:hover .user-type': {
+					color: theme.palette.primary.dark,
+					transition: 'all .15s',
+				},
+				transition: 'all .15s',
+			})}>
+				<UserIcon className="user-icon"/>
+				<Grid display="flex" flexDirection="column" justifyContent="center">
+					<UserName className="user-name" variant="h6">{user?.name.split(' ')[0]}</UserName>
+					{user?.type === UserTypeEnum.ADMIN && <UserType className="user-type" variant="body1">Admin</UserType>}
 				</Grid>
-			</LinkUnstyled>
+			</Grid>
 		</>
 	);
 };

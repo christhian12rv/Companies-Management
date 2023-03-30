@@ -1,6 +1,9 @@
 import { Box, CssBaseline, Slide, Toolbar, useMediaQuery, useScrollTrigger } from '@mui/material';
+import { ThunkDispatch } from '@reduxjs/toolkit';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
+import { toggleDarkMode as toggleDarkModeAction } from '../../../store/features/auth/auth.actions';
 import LocalStorageEnum from '../../../types/enums/LocalStorageEnum';
 import ScreenSizeQuerysEnum from '../../../types/enums/ScreenSizeQuerysEnum';
 import { AppBarContent } from './AppBarContent';
@@ -15,6 +18,7 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 	const isMobile = useMediaQuery('(max-width: ' + ScreenSizeQuerysEnum.MOBILE + 'px');
 	const [openSidebar, setOpenSidebar] = useState(!isMobile ? localStorage.getItem(LocalStorageEnum.SIDEBAR_OPEN) === 'true' : false);
 	const [fullscreen, setFullscreen] = useState(false);
+	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 	
 	const container = window !== undefined ? (): any => window().document.body : undefined;
 
@@ -30,6 +34,10 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 	const handleDrawerToggleSidebar = (): void => {
 		localStorage.setItem(LocalStorageEnum.SIDEBAR_OPEN, openSidebar ? 'false' : 'true');
 		setOpenSidebar(!openSidebar);
+	};
+
+	const handleDrawerToggleDarkMode = (): void => {
+		dispatch(toggleDarkModeAction());
 	};
 
 	type HideOnScrollProps = {
@@ -61,6 +69,7 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 							<AppBarContent
 								handleDrawerToggleSidebar={handleDrawerToggleSidebar}
 								handleToggleFullScreen={handleToggleFullScreen}
+								handleDrawerToggleDarkMode={handleDrawerToggleDarkMode}
 							/>
 						</Toolbar>
 					</AppBarMobileStyled>
@@ -80,6 +89,7 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 						<AppBarContent
 							handleDrawerToggleSidebar={handleDrawerToggleSidebar}
 							handleToggleFullScreen={handleToggleFullScreen}
+							handleDrawerToggleDarkMode={handleDrawerToggleDarkMode}
 						/>
 					</Toolbar>
 				</AppBarStyled>
@@ -115,7 +125,7 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 				
 				<Box sx={{ flexGrow: 1, overflowX: 'hidden',  }}>
 					{!isMobile ? <DrawerHeader /> : <></>}
-					<Box sx={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto', overflowX: 'hidden', textAlign: 'start', mt: 2, pb: 5, pt: isMobile ? 5 : 0, px: 3, }}>
+					<Box sx={{ maxHeight: 'calc(98vh - 100px)', overflowY: 'auto', overflowX: 'hidden', textAlign: 'start', mt: 0, pb: 5, pt: isMobile ? 5 : 0, px: 3, }}>
 						<Outlet/>
 					</Box>
 				</Box>

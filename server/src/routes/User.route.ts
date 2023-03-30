@@ -8,6 +8,7 @@ userRoute.get('/', UserController.findAll);
 userRoute.get('/:id', UserMiddleware.findById, UserController.findById);
 userRoute.post('/', UserMiddleware.verifyAdminAuth, UserMiddleware.create, UserController.create);
 userRoute.post('/login', UserMiddleware.login, UserController.login);
+userRoute.post('/get-auth', UserMiddleware.verifyAuth, UserController.getAuth);
 userRoute.put('/:id', UserMiddleware.verifyAdminAuth, UserMiddleware.update, UserController.update);
 userRoute.delete('/:id', UserMiddleware.verifyAdminAuth, UserMiddleware.delete, UserController.delete);
 

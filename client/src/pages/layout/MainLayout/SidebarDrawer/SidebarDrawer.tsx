@@ -7,6 +7,8 @@ import { ListItemButtonStyled, ListSubItemButtonStyled, LogoTitle } from './Side
 import RoutesEnum from '../../../../types/enums/RoutesEnum';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { logout as logoutAction } from '../../../../store/features/auth/auth.actions';
+import { useTypedSelector } from '../../../../store/utils/useTypedSelector';
+import UserTypeEnum from '../../../../types/enums/User/UserTypeEnum';
 
 type SidebarDrawerProps = {
 	openSidebar: boolean;
@@ -17,6 +19,7 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [expandedItems, setExpandedItems] = useState<{ name: string; expanded: boolean; }[]>([]);
+	const { user: loggedUser, } = useTypedSelector((state) => state.auth);
 
 	const sidebarListItems = [
 		{
@@ -28,6 +31,7 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 					title: 'Registrar Usuário',
 					icon: <GroupAddRounded className="icon"/>,
 					link: RoutesEnum.USER_REGISTER,
+					admin: true,
 				},
 				{
 					title: 'Listar Usuários',
@@ -44,7 +48,8 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 				{
 					title: 'Adicionar Empresa',
 					icon: <DomainAddRounded className="icon"/>,
-					link: RoutesEnum.COMPANY_REGISTER,
+					link: RoutesEnum.COMPANY_CREATE,
+					admin: true,
 				},
 				{
 					title: 'Listar Empresas',
@@ -61,7 +66,8 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 				{
 					title: 'Adicionar Funcionário',
 					icon: <GroupAddRounded className="icon"/>,
-					link: RoutesEnum.EMPLOYEE_REGISTER,
+					link: RoutesEnum.EMPLOYEE_CREATE,
+					admin: true,
 				},
 				{
 					title: 'Listar Funcionários',
@@ -104,7 +110,7 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 		<>
 			<DrawerHeader>
 				<LinkUnstyled to={RoutesEnum.USER_LIST} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'nowrap', }}>
-					<BusinessRounded sx={{ fontSize: '2em', }}/>
+					<BusinessRounded sx={(theme): any => ({ fontSize: '2em', color: theme.palette.grey[900], })}/>
 					{openSidebar && (
 						<LogoTitle
 							variant="h6"
@@ -141,7 +147,7 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 							<>
 								<Collapse in={expandedItems.find(i => i.name === sidebarItem.name)?.expanded} timeout="auto">
 									<List component="div" disablePadding>
-										{sidebarItem.items.map((item) => (
+										{sidebarItem.items.filter(item => !item.admin ? true : (loggedUser?.type === UserTypeEnum.ADMIN ? true : false)).map((item) => (
 											<ListSubItemButtonStyled
 												key={item.title}
 												active={item.link === location.pathname}

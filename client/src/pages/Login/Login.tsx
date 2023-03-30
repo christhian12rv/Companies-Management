@@ -53,7 +53,7 @@ export const Login: React.FunctionComponent = () => {
 
 	useRequestVerification({
 		request,
-		successNavigate: RoutesEnum.COMPANY_LIST,
+		successNavigate: RoutesEnum.USER_LIST,
 	});
 
 	const handleSubmitForm = (): void => {

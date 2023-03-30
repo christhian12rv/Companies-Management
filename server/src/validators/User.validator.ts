@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import Database from '../config/Database';
 import JoiCustomError from '../errors/JoiCustomError';
 import UserService from '../services/User.service';
+import logger from '../config/logger';
 
 export const findById = Joi.object().keys({
 	id: Joi
@@ -131,8 +132,8 @@ export const update = Joi.object().keys({
 		.min(2)
 		.messages({
 			'string.base': 'Nome é inválido',
+			'string.empty': 'Nome é inválido',
 			'string.min': 'Nome deve conter no mínimo 2 caracteres',
-			'any.required':'Nome é obrigatório',
 		}),
 
 	cpf: Joi
@@ -141,16 +142,18 @@ export const update = Joi.object().keys({
 		.regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)
 		.messages({
 			'string.base': 'CPF é inválido',
+			'string.empty': 'CPF é inválido',
 			'string.pattern.base': 'CPF é inválido',
-			'any.required':'CPF é obrigatório',
 		})
-		.external(async (value) => {
-			if (!value)
-				return;
-
-			const user = await Database.getInstance().getDatabase().user.findUnique({
+		.external(async (value, helpers) => {
+			const user = await Database.getInstance().getDatabase().user.findFirst({
 				where: {
-					cpf: value,
+					AND: {
+						id: {
+							not: helpers.state.ancestors[0].id,
+						},
+						cpf: value,
+					},
 				},
 			});
 
@@ -164,16 +167,18 @@ export const update = Joi.object().keys({
 		.email()
 		.messages({
 			'string.base': 'Email é inválido',
+			'string.empty': 'Email é inválido',
 			'string.email': 'Email é inválido',
-			'any.required':'Email é obrigatório',
 		})
-		.external(async (value) => {
-			if (!value)
-				return;
-
-			const user = await Database.getInstance().getDatabase().user.findUnique({
+		.external(async (value, helpers) => {
+			const user = await Database.getInstance().getDatabase().user.findFirst({
 				where: {
-					email: value,
+					AND: {
+						id: {
+							not: helpers.state.ancestors[0].id,
+						},
+						email: value,
+					},
 				},
 			});
 
@@ -184,12 +189,15 @@ export const update = Joi.object().keys({
 	type: Joi
 		.string()
 		.optional()
-		.valid(UserTypeEnum)
 		.messages({
 			'string.base': 'Tipo é inválido',
-			'any.required':'Tipo é obrigatório',
+			'string.empty': 'Tipo é inválido',
+		})
+		.external(async (value) => {
+			if (!UserTypeEnum[value])
+				throw new JoiCustomError('Tipo é inválido', 'type');
 		}),
-}).options({ abortEarly : false, });
+}).options({ abortEarly : false, allowUnknown: true, });
 
 
 export const _delete = Joi.object().keys({
@@ -214,11 +222,9 @@ export const login = Joi.object().keys({
 	email: Joi
 		.string()
 		.required()
-		.email()
 		.messages({
 			'string.base': 'Email é inválido',
 			'string.empty': 'Email é inválido',
-			'string.email': 'Email é inválido',
 			'any.required':'Email é obrigatório',
 		})
 		.external(async (value) => {

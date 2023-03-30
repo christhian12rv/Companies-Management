@@ -49,6 +49,7 @@ declare module '@mui/material/styles' {
 
 const theme = createTheme({
 	palette: {
+		mode: 'light',
 		primary: {
 			main: '#10B981',
 			dark: '#059669',
@@ -65,9 +66,6 @@ const theme = createTheme({
 			dark: 'rgb(75, 75, 75)',
 			white: 'rgb(250, 250, 250)',
 			light: 'rgb(131, 131, 131)',
-			green: '#00e676',
-			greenDark: '#00c853',
-			greenDarker: '#009624',
 		},
 		divider: 'rgba(0, 0, 0, 0.1)',
 		form: {

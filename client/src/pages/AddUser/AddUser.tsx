@@ -1,9 +1,10 @@
-import { Box, Button, FormControl, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, FormControl, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
 import UserTypeEnum from '../../types/enums/User/UserTypeEnum';
 import UserRegisterType from '../../types/User/UserRegisterType';
 import getRequestErrorByField from '../../store/utils/getRequestErrorByField';
-import { LockRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material';
+import { LockRounded, NavigateBeforeRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { useTypedSelector } from '../../store/utils/useTypedSelector';
@@ -15,6 +16,7 @@ import { MainButton } from '../../components/MainButton';
 import InputType from '../../types/Form/InputType';
 
 export const AddUser: React.FunctionComponent = () => {
+	const navigate = useNavigate();
 	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 	const { request, loading, } = useTypedSelector((state) => state.user);
 
@@ -132,7 +134,12 @@ export const AddUser: React.FunctionComponent = () => {
 		<Box sx={{ display:'flex', flexDirection:'column', gap: 2, p: 2, }}>
 			<BackdropLoading open={loading}/>
 
-			<Typography variant="h5">Registrar Usuário</Typography>
+			<Grid display="flex" flexWrap="wrap" alignItems="center">
+				<Typography variant="h5" sx={{ flexGrow: 1, }}>Registrar Usuário</Typography>
+				<IconButton onClick={(): any => navigate(RoutesEnum.USER_LIST)}>
+					<NavigateBeforeRounded sx={{ fontSize: '1.3em', }}/>
+				</IconButton>
+			</Grid>
 			
 			<FormControl>
 				<Grid container columnSpacing={2} rowSpacing={2} sx={{ alignItems: 'flex-start', justifyContent: 'center', }}>

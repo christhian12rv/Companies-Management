@@ -28,7 +28,7 @@ class CompanyMiddleware {
 
 			return res.status(400).json({ errors: formatErrors(e), message, });
 		}
-
+		logger.info('PASSOU');
 		next();
 	}
 

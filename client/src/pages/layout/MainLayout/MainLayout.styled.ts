@@ -57,7 +57,7 @@ export const AppBarStyled = styled(AppBar, {
 		duration: theme.transitions.duration.leavingScreen,
 	}),
 	left: 65,
-	backgroundColor: '#ffff',
+	backgroundColor: theme.palette.common.white,
 	boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
 	height: 65,
 	width: 'calc(100% - 65px)',
@@ -78,7 +78,7 @@ export const AppBarMobileStyled = styled(AppBar, {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
 	}),
-	backgroundColor: '#ffff',
+	backgroundColor: theme.palette.common.white,
 	boxShadow: 'rgba(99, 99, 99, 0.2) 0px 2px 8px 0px',
 	height: 65,
 }));

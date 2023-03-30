@@ -116,8 +116,6 @@ class UserMiddleware {
 
 				return res.status(401).send({ message, });
 			}
-
-			next();
 		} catch (error) {
 			const message = 'Ocorreram erros internos ao verificar usuário';
 			logger.error(message);

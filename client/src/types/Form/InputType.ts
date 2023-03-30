@@ -6,6 +6,8 @@ interface InputType {
 	label: string;
 	select?: SelectType[];
 	password?: boolean;
+	disabled?: boolean;
+	onChange?: (event: any) => any;
 }
 
 export default InputType;
