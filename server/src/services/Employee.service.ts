@@ -32,23 +32,23 @@ class EmployeeService {
 	public async create(data: EmployeeCreate): Promise<Employee> {
 		const { name, companyId, dependentsNumber, rg, cpf, address, salary, } = data;
 
-		let descount = 0;
+		let discount = 0;
 		if (dependentsNumber > 2)
-			descount = salary * (100 - (dependentsNumber * 3)) / 100;
+			discount = salary - (salary * (100 - (dependentsNumber * 3)) / 100);
 		else
-			descount = salary * (100 - (dependentsNumber * 5)) / 100;
+			discount = salary - (salary * (100 - (dependentsNumber * 5)) / 100);
 
 		const addressCreated = await AddressService.create(address);
 
 		const employee = await Database.getInstance().getDatabase().employee.create({
 			data: {
 				name,
-				companyId,
-				dependentsNumber,
+				companyId: Number(companyId),
+				dependentsNumber: Number(dependentsNumber),
 				rg,
 				cpf,
-				salary,
-				descount,
+				salary: Number(salary),
+				discount: Number(discount),
 				addressId: addressCreated.id,
 			},
 			include: {
@@ -65,16 +65,16 @@ class EmployeeService {
 
 		const employeeFounded = await this.findById(id);
 
-		let descount = 0;
+		let discount = 0;
 
 		if (dependentsNumber || salary) {
 			const d = dependentsNumber ?? employeeFounded.dependentsNumber;
 			const s = salary ?? employeeFounded.salary;
 
 			if (dependentsNumber > 2)
-				descount = s * (100 - (d * 3)) / 100;
+				discount = salary - (s * (100 - (d * 3)) / 100);
 			else
-				descount = s * (100 - (d * 5)) / 100;
+				discount = salary - (s * (100 - (d * 5)) / 100);
 		}
 
 		await AddressService.update(employeeFounded.addressId, address);
@@ -85,12 +85,12 @@ class EmployeeService {
 			},
 			data: {
 				...(!!name && { name, }),
-				...(!!companyId && { companyId, }),
-				...(!!dependentsNumber && { dependentsNumber, }),
+				...(!!companyId && { companyId: Number(companyId), }),
+				...(!!dependentsNumber && { dependentsNumber: Number(dependentsNumber), }),
 				...(!!rg && { rg, }),
 				...(!!cpf && { cpf, }),
-				...(!!salary && { salary, }),
-				...((dependentsNumber || salary) && { descount, }),
+				...(!!salary && { salary: Number(salary), }),
+				...((dependentsNumber || salary) && { discount: Number(discount), }),
 			},
 			include: {
 				address: true,

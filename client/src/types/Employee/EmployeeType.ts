@@ -12,7 +12,7 @@ interface EmployeeType extends BaseModelType {
 	address?: AddressType;
 	addressId: number;
 	salary: number;
-	descount: number;
+	discount: number;
 }
 
 export default EmployeeType;

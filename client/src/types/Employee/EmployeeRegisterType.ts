@@ -1,17 +1,13 @@
-import AddressType from '../Address/AddressType';
-import CompanyType from '../Company/CompanyType';
+import AddressRegisterType from '../Address/AddressRegisterType';
 
 interface EmployeeRegisterType {
 	name: string;
-	company?: CompanyType;
 	companyId: number;
 	dependentsNumber: number;
 	rg: string;
 	cpf: string;
-	address?: AddressType;
-	addressId: number;
+	address: AddressRegisterType;
 	salary: number;
-	descount: number;
 }
 
 export default EmployeeRegisterType;

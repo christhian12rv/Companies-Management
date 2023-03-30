@@ -5,6 +5,22 @@
   text-align: center;
 }
 
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  -webkit-box-shadow: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgb(200, 200, 200);
+  outline: none;
+  border-radius: 1px;
+}
+
+
 .logo {
   height: 6em;
   padding: 1.5em;

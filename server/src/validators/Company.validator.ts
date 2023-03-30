@@ -163,7 +163,7 @@ export const update = Joi.object().keys({
 			'string.empty': 'Inscrição estadual é inválida',
 		}),
 
-	address: AddressValidator.create
+	address: AddressValidator.update
 		.optional(),
 }).options({ abortEarly : false, allowUnknown: true, });
 

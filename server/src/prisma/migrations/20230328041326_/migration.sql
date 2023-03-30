@@ -55,7 +55,7 @@ CREATE TABLE "Employee" (
     "cpf" TEXT NOT NULL,
     "addressId" INTEGER NOT NULL,
     "salary" DOUBLE PRECISION NOT NULL,
-    "descount" DOUBLE PRECISION NOT NULL,
+    "discount" DOUBLE PRECISION NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

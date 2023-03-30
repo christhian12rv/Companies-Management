@@ -16,6 +16,7 @@ import { AddCompany } from './pages/AddCompany/AddCompany';
 import { ListCompanies } from './pages/ListCompanies';
 import { ThemeProviderCustom } from './components/ThemeProviderCustom';
 import { VerifyAdminAuth } from './components/utils/VerifyAdminAuth/VerifyAdminAuth';
+import { AddEmployee } from './pages/AddEmployee/AddEmployee';
 
 export const App: React.FunctionComponent = () => {
 	
@@ -31,6 +32,7 @@ export const App: React.FunctionComponent = () => {
 								<Route path={RoutesEnum.USER_LIST} element={<ListUsers />} />
 								<Route path={RoutesEnum.COMPANY_CREATE} element={<AddCompany />} />
 								<Route path={RoutesEnum.COMPANY_LIST} element={<ListCompanies />} />
+								<Route path={RoutesEnum.EMPLOYEE_CREATE} element={<AddEmployee />} />
 
 								<Route element={<VerifyAdminAuth />}>
 									<Route path={RoutesEnum.USER_REGISTER} element={<AddUser />} />

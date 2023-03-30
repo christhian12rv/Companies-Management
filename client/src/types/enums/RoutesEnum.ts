@@ -5,7 +5,7 @@ enum RoutesEnum {
 	COMPANY_CREATE = '/company/create',
 	COMPANY_LIST = '/company/list',
 	EMPLOYEE_CREATE = '/employee/create',
-	EMPLOYEE_LIST = '/employee/create',
+	EMPLOYEE_LIST = '/employee/list',
 }
 
 export default RoutesEnum;

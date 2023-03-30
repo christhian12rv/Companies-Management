@@ -1,5 +1,6 @@
 import * as Joi from 'joi';
 import Database from '../config/Database';
+import logger from '../config/logger';
 import JoiCustomError from '../errors/JoiCustomError';
 import CompanyService from '../services/Company.service';
 import EmployeeService from '../services/Employee.service';
@@ -24,6 +25,7 @@ export const create = Joi.object().keys({
 		.min(2)
 		.messages({
 			'string.base': 'Nome é inválido',
+			'string.empty': 'Nome é obrigatório',
 			'string.min': 'Nome deve conter no mínimo 2 caracteres',
 			'any.required':'Nome é obrigatório',
 		}),
@@ -34,10 +36,12 @@ export const create = Joi.object().keys({
 		.required()
 		.messages({
 			'number.base': 'Empresa é inválida',
+			'number.empty': 'Empresa é obrigatória',
 			'number.integer': 'Empresa é inválida',
 			'any.required':'Empresa é obrigatória',
 		})
 		.external(async (value) => {
+			logger.info('COMPANY', value);
 			const company = await CompanyService.findById(value);
 			if (!company)
 				throw new JoiCustomError(`Não existe uma empresa com id ${value}`, 'companyId');
@@ -49,6 +53,7 @@ export const create = Joi.object().keys({
 		.required()
 		.messages({
 			'number.base': 'Número de dependentes é inválido',
+			'number.empty': 'Número de dependentes é obrigatório',
 			'number.integer': 'Número de dependentes é inválido',
 			'any.required':'Número de dependentes é obrigatório',
 		}),
@@ -59,6 +64,7 @@ export const create = Joi.object().keys({
 		.regex(/\d{2}\.\d{3}\.\d{3}-[0-9X]/)
 		.messages({
 			'string.base': 'RG é inválido',
+			'string.empty': 'RG é obrigatório',
 			'string.pattern.base': 'RG é inválido',
 			'any.required':'RG é obrigatório',
 		})
@@ -79,6 +85,7 @@ export const create = Joi.object().keys({
 		.regex(/^\d{3}\.\d{3}\.\d{3}-\d{2}$/)
 		.messages({
 			'string.base': 'CPF é inválido',
+			'string.empty': 'CPF é obrigatório',
 			'string.pattern.base': 'CPF é inválido',
 			'any.required':'CPF é obrigatório',
 		})
@@ -99,6 +106,7 @@ export const create = Joi.object().keys({
 		.min(0)
 		.messages({
 			'number.base': 'Salário é inválido',
+			'number.empty': 'Salário é obrigatório',
 			'any.required':'Salário é obrigatório',
 		}),
 
@@ -107,7 +115,7 @@ export const create = Joi.object().keys({
 		.messages({
 			'any.required': 'Endereço é obrigatório',
 		}),
-}).options({ abortEarly : false, });
+}).options({ abortEarly : false, allowUnknown: true, });
 
 
 export const update = Joi.object().keys({
@@ -218,7 +226,7 @@ export const update = Joi.object().keys({
 
 	address: AddressValidator.update
 		.optional(),
-}).options({ abortEarly : false, });
+}).options({ abortEarly : false, allowUnknown: true, });
 
 
 export const _delete = Joi.object().keys({

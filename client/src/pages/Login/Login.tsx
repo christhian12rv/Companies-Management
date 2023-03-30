@@ -15,10 +15,11 @@ import { useTypedSelector } from '../../store/utils/useTypedSelector';
 import { login as loginAction, clearRequest as clearRequestAction } from '../../store/features/auth/auth.actions';
 import RoutesEnum from '../../types/enums/RoutesEnum';
 import { useRequestVerification } from '../../utils/hooks/useRequestVerification';
+import { AuthActionsTypes } from '../../store/features/auth/auth.types';
 
 export const Login: React.FunctionComponent = () => {
 	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-	const { request, loading, } = useTypedSelector((state) => state.auth);
+	const { request, loading, previousType, } = useTypedSelector((state) => state.auth);
 	const theme = useTheme() as Theme;
 
 	const getPasswordVisibilityButton = (name): any => {
@@ -54,6 +55,10 @@ export const Login: React.FunctionComponent = () => {
 	useRequestVerification({
 		request,
 		successNavigate: RoutesEnum.USER_LIST,
+		type: {
+			actualType: previousType,
+			expectedType: AuthActionsTypes.LOGIN_SUCCESS,
+		},
 	});
 
 	const handleSubmitForm = (): void => {

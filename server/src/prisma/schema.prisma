@@ -62,7 +62,7 @@ model Employee {
   address          Address  @relation(fields: [addressId], references: [id], onDelete: Cascade)
   addressId        Int
   salary           Float
-  descount         Float
+  discount         Float
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }

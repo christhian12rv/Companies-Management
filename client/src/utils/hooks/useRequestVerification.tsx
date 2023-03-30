@@ -29,7 +29,7 @@ export const useRequestVerification = ({ request, type, successMessage, successN
 				if (successNavigate)
 					navigate(successNavigate);
 				return;
-			} else if (request.status === 500 || request.status === 401) {
+			} else if (request.status === 500) {
 				enqueueSnackbar(request.message, { variant: 'error', });
 				return;
 			}
