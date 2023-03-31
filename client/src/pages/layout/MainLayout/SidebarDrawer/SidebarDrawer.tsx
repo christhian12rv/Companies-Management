@@ -49,7 +49,6 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 					title: 'Adicionar Empresa',
 					icon: <DomainAddRounded className="icon"/>,
 					link: RoutesEnum.COMPANY_CREATE,
-					admin: true,
 				},
 				{
 					title: 'Listar Empresas',
@@ -67,7 +66,6 @@ export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ ope
 					title: 'Adicionar Funcionário',
 					icon: <GroupAddRounded className="icon"/>,
 					link: RoutesEnum.EMPLOYEE_CREATE,
-					admin: true,
 				},
 				{
 					title: 'Listar Funcionários',

@@ -4,7 +4,6 @@ import * as bcrypt from 'bcrypt';
 import Database from '../config/Database';
 import JoiCustomError from '../errors/JoiCustomError';
 import UserService from '../services/User.service';
-import logger from '../config/logger';
 
 export const findById = Joi.object().keys({
 	id: Joi
@@ -19,6 +18,15 @@ export const findById = Joi.object().keys({
 });
 
 export const create = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	name: Joi
 		.string()
 		.required()
@@ -92,6 +100,10 @@ export const create = Joi.object().keys({
 			'string.empty': 'Confirmação de senha é inválida',
 			'string.min': 'Senha deve ter no mínimo 8 caracteres',
 			'any.required':'Confirmação de senha é obrigatória',
+		})
+		.external(async (value, helpers) => {
+			if (value !== helpers.state.ancestors[0].password)
+				throw new JoiCustomError('As senhas devem ser iguais', 'confirmPassword');
 		}),
 
 	type: Joi
@@ -106,10 +118,19 @@ export const create = Joi.object().keys({
 			if (!UserTypeEnum[value])
 				throw new JoiCustomError('Tipo é inválido', 'type');
 		}),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const update = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	id: Joi
 		.number()
 		.integer()
@@ -197,10 +218,19 @@ export const update = Joi.object().keys({
 			if (!UserTypeEnum[value])
 				throw new JoiCustomError('Tipo é inválido', 'type');
 		}),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const _delete = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	id: Joi
 		.number()
 		.integer()
@@ -216,7 +246,7 @@ export const _delete = Joi.object().keys({
 			if (!User)
 				throw new JoiCustomError(`Não existe um usuário com id ${value}`, 'id');
 		}),
-});
+}).options({ abortEarly: false, });
 
 export const login = Joi.object().keys({
 	email: Joi
@@ -246,13 +276,13 @@ export const login = Joi.object().keys({
 			'string.empty': 'Senha é inválida',
 			'any.required':'Senha é obrigatória',
 		})
-		.external(async (value) => {
+		.external(async (value, helpers) => {
 			const user = await Database.getInstance().getDatabase().user.findUnique({
 				where: {
-					email: value,
+					email: helpers.state.ancestors[0].email,
 				},
 			});
-
+			
 			if (user && !bcrypt.compareSync(value, user.password))
 				throw new JoiCustomError('Senha inválida', 'password');
 		}),

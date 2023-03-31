@@ -110,7 +110,8 @@ export const AddCompany: React.FunctionComponent = () => {
 		},
 	});
 
-	const handleSubmitForm = (): void => {
+	const handleSubmitForm = (event): void => {
+		event.preventDefault();
 		dispatch(createAction(company));
 	};
 
@@ -167,34 +168,36 @@ export const AddCompany: React.FunctionComponent = () => {
 				</IconButton>
 			</Grid>
 			
-			<FormControl>
-				<Grid container columnSpacing={2} rowSpacing={2} sx={{ alignItems: 'flex-start', }}>
-					{inputs.map(input => (
-						<Grid key={input.name} item xs={12} md={6}>
-							<TextField
-								select={!!input.select}
-								type={input.type}
-								label={input.label}
-								error={!!getRequestErrorByField(request, input.name)}
-								helperText={getRequestErrorByField(request, input.name)?.message}
-								onChange={(event): void => handleChangeCompanyInput(input.name, event)}
-								value={input.name.split('.')[1] ? company.address[input.name.split('.')[1]] : company[input.name]}
-								fullWidth
-							>
-								{input.select && input.select.map(item => (
-									<MenuItem key={item.value} value={item.value}>
-										{item.text}
-									</MenuItem>
-								))}
-							</TextField>
-						</Grid>
-					))}
+			<form onSubmit={handleSubmitForm}>
+				<FormControl>
+					<Grid container columnSpacing={2} rowSpacing={2} sx={{ alignItems: 'flex-start', }}>
+						{inputs.map(input => (
+							<Grid key={input.name} item xs={12} md={6}>
+								<TextField
+									select={!!input.select}
+									type={input.type}
+									label={input.label}
+									error={!!getRequestErrorByField(request, input.name)}
+									helperText={getRequestErrorByField(request, input.name)?.message}
+									onChange={(event): void => handleChangeCompanyInput(input.name, event)}
+									value={input.name.split('.')[1] ? company.address[input.name.split('.')[1]] : company[input.name]}
+									fullWidth
+								>
+									{input.select && input.select.map(item => (
+										<MenuItem key={item.value} value={item.value}>
+											{item.text}
+										</MenuItem>
+									))}
+								</TextField>
+							</Grid>
+						))}
 
-					<Grid item xs={12} md={12}>
-						<MainButton onClick={handleSubmitForm} type="submit" sx={{ width: '200px', }}>Salvar</MainButton>
+						<Grid item xs={12} md={12}>
+							<MainButton type="submit" sx={{ width: '200px', }}>Salvar</MainButton>
+						</Grid>
 					</Grid>
-				</Grid>
-			</FormControl>
+				</FormControl>
+			</form>
 		</Box>
 	);
 };

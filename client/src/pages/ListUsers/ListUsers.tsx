@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import { DataGrid, GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
+import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import { findAll as findAllAction } from '../../store/features/user/user.actions';
+import { findAll as findAllAction, clearRequest as clearRequestAction } from '../../store/features/user/user.actions';
 import UserType from '../../types/User/UserType';
 import { enqueueSnackbar } from 'notistack';
 import { MainButton } from '../../components/MainButton';
@@ -14,6 +14,9 @@ import { EditRounded } from '@mui/icons-material';
 import { UpdateUserModal } from '../../components/UpdateUserModal';
 import { useTypedSelector } from '../../store/utils/useTypedSelector';
 import { UserActionsTypes } from '../../store/features/user/user.types';
+import { DataGridCustom } from '../../components/DataGridCustom';
+import { ThunkDispatch } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 export const ListUsers: React.FunctionComponent = () => {
 	const navigate = useNavigate();
@@ -23,6 +26,7 @@ export const ListUsers: React.FunctionComponent = () => {
 	const [editUserModalOpen, setEditUserModalOpen] = useState(false);
 	const { user: loggedUser, } = useTypedSelector((state) => state.auth);
 	const { request, previousType, } = useTypedSelector((state) => state.user);
+	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
 	const handleClickEditUser = (user: UserType): void => {
 		setUserClicked(user);
@@ -110,6 +114,7 @@ export const ListUsers: React.FunctionComponent = () => {
 	};
 
 	useEffect(() => {
+		dispatch(clearRequestAction());
 		fetchUsers();
 	}, []);
 
@@ -131,20 +136,10 @@ export const ListUsers: React.FunctionComponent = () => {
 			{loggedUser?.type === UserTypeEnum.ADMIN && <MainButton onClick={handleAddUserClick} sx={{ minWidth: '200px', alignSelf: 'flex-end', }}>Registrar Usuário</MainButton>}
 
 			<Box>
-				<DataGrid
+				<DataGridCustom
 					rows={rows}
 					columns={columns}
 					loading={loading}
-					initialState={{
-						pagination: {
-							paginationModel: {
-								pageSize: 10,
-							},
-						},
-					}}
-					pageSizeOptions={[5]}
-					disableRowSelectionOnClick
-					autoHeight
 				/>
 			</Box>
 

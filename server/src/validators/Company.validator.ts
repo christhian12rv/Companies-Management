@@ -17,6 +17,15 @@ export const findById = Joi.object().keys({
 });
 
 export const create = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	companyName: Joi
 		.string()
 		.required()
@@ -79,10 +88,19 @@ export const create = Joi.object().keys({
 		.messages({
 			'any.required': 'Endereço é obrigatório',
 		}),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const update = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	id: Joi
 		.number()
 		.integer()
@@ -165,10 +183,19 @@ export const update = Joi.object().keys({
 
 	address: AddressValidator.update
 		.optional(),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const _delete = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	id: Joi
 		.number()
 		.integer()
@@ -184,4 +211,4 @@ export const _delete = Joi.object().keys({
 			if (!Company)
 				throw new JoiCustomError(`Não existe um usuário com id ${value}`, 'id');
 		}),
-});
+}).options({ abortEarly: false, });

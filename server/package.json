@@ -1,7 +1,7 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "A api for Company Management web app",
+  "description": "A api for Companies Management web app",
   "main": "index.js",
   "scripts": {
     "dev": "eslint . --ext .ts && ts-node-dev --respawn src/index.ts",

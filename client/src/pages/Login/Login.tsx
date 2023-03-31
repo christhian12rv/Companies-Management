@@ -8,7 +8,7 @@ import AuthLoginType from '../../types/Auth/AuthLoginType';
 import InputType from '../../types/Form/InputType';
 import { MainButton } from '../../components/MainButton';
 import getRequestErrorByField from '../../store/utils/getRequestErrorByField';
-import { AccountCircleRounded, LockRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material';
+import { LockRounded, VisibilityOffRounded, VisibilityRounded } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { useTypedSelector } from '../../store/utils/useTypedSelector';
@@ -61,7 +61,8 @@ export const Login: React.FunctionComponent = () => {
 		},
 	});
 
-	const handleSubmitForm = (): void => {
+	const handleSubmitForm = (event): void => {
+		event.preventDefault();
 		dispatch(loginAction(login));
 	};
 
@@ -125,35 +126,37 @@ export const Login: React.FunctionComponent = () => {
 					<LoginIcon/>
 					<Typography variant="h5" sx={{ mb: 2, }}>Login</Typography>
 
-					<FormControl>
-						<Grid container spacing={2} sx={{ alignItems: 'flex-start', justifyContent: 'center', }}>
-							{inputs.map(input => (
-								<Grid key={input.name} item xs={12} md={12}>
-									<TextField
-										select={!!input.select}
-										type={input.type}
-										label={input.label}
-										error={!!getRequestErrorByField(request, input.name)}
-										helperText={getRequestErrorByField(request, input.name)?.message}
-										onChange={(event): void => handleChangeLoginInput(input.name, event)}
-										value={login[input.name]}
-										InputProps={input.password ? getPasswordInputProps(input.name) : {}}
-										fullWidth
-									>
-										{input.select && input.select.map(item => (
-											<MenuItem key={item.value} value={item.value}>
-												{item.text}
-											</MenuItem>
-										))}
-									</TextField>
-								</Grid>
-							))}
+					<form onSubmit={handleSubmitForm}>
+						<FormControl>
+							<Grid container spacing={2} sx={{ alignItems: 'flex-start', justifyContent: 'center', }}>
+								{inputs.map(input => (
+									<Grid key={input.name} item xs={12} md={12}>
+										<TextField
+											select={!!input.select}
+											type={input.type}
+											label={input.label}
+											error={!!getRequestErrorByField(request, input.name)}
+											helperText={getRequestErrorByField(request, input.name)?.message}
+											onChange={(event): void => handleChangeLoginInput(input.name, event)}
+											value={login[input.name]}
+											InputProps={input.password ? getPasswordInputProps(input.name) : {}}
+											fullWidth
+										>
+											{input.select && input.select.map(item => (
+												<MenuItem key={item.value} value={item.value}>
+													{item.text}
+												</MenuItem>
+											))}
+										</TextField>
+									</Grid>
+								))}
 
-							<Grid item xs={12} md={12}>
-								<MainButton onClick={handleSubmitForm} type="submit" sx={{ width: '200px', }}>Continuar</MainButton>
+								<Grid item xs={12} md={12}>
+									<MainButton type="submit" sx={{ width: '200px', }}>Continuar</MainButton>
+								</Grid>
 							</Grid>
-						</Grid>
-					</FormControl>
+						</FormControl>
+					</form>
 				</CardContent>
 			</LoginCard>
 		</Box>

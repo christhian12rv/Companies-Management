@@ -1,46 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, FormControl, Grid, IconButton, MenuItem, TextField, Typography } from '@mui/material';
-import EmployeeRegisterType from '../../types/Employee/EmployeeRegisterType';
-import getRequestErrorByField from '../../store/utils/getRequestErrorByField';
-import { NavigateBeforeRounded } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
+import { FormControl, Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { DialogStyled } from './UpdateEmployeeModal.styled';
 import { ThunkDispatch } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import getRequestErrorByField from '../../store/utils/getRequestErrorByField';
 import { useTypedSelector } from '../../store/utils/useTypedSelector';
-import { BackdropLoading } from '../../components/BackdropLoading';
-import { create as createAction, clearRequest as clearRequestAction } from '../../store/features/employee/employee.actions';
-import { findAll as findAllCompaniesAction } from '../../store/features/company/company.actions';
 import RoutesEnum from '../../types/enums/RoutesEnum';
-import { useRequestVerification } from '../../utils/hooks/useRequestVerification';
-import { MainButton } from '../../components/MainButton';
 import InputType from '../../types/Form/InputType';
+import EmployeeType from '../../types/Employee/EmployeeType';
+import { useRequestVerification } from '../../utils/hooks/useRequestVerification';
+import { BackdropLoading } from '../BackdropLoading';
+import { MainButton } from '../MainButton';
+import { update as updateAction, clearRequest as clearRequestAction } from '../../store/features/employee/employee.actions';
+import { findAll as findAllCompaniesAction } from '../../store/features/company/company.actions';
+import EmployeeUpdateType from '../../types/Employee/EmployeeUpdateType';
 import selectArrayBrazillianStates from '../../utils/selectArrayBrazillianStates';
-import { EmployeeActionsTypes } from '../../store/features/employee/employee.types';
 import { enqueueSnackbar } from 'notistack';
 
-export const AddEmployee: React.FunctionComponent = () => {
-	const navigate = useNavigate();
-	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-	const { request, loading, previousType, } = useTypedSelector((state) => state.employee);
-	const [fetchCompaniesLoading, setFetchCompaniesLoading] = useState(true);
+type UpdateEmployeeModalProps = {
+	employee?: EmployeeType;
+	open: boolean;
+	onClose: () => any;
+};
 
-	const [employee, setEmployee] = useState<EmployeeRegisterType>({
-		name: '',
-		companyId: 0,
-		dependentsNumber: 0,
-		rg: '',
-		cpf: '',
-		salary: 0,
-		address: {
-			street: '',
-			number: 0,
-			complement: '',
-			neighborhood: '',
-			city: '',
-			uf: '',
-			cep: '',
-		},
-	});
+export const UpdateEmployeeModal: React.FunctionComponent<UpdateEmployeeModalProps> = ({ employee: selectedEmployee, open, onClose, }) => {
+	if (!selectedEmployee)
+		return <></>;
+	
+	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+	const { request, loading, } = useTypedSelector((state) => state.employee);
+	const [fetchCompaniesLoading, setFetchCompaniesLoading] = useState(true);
 
 	const [inputs, setInputs] = useState<InputType[]>([
 		{
@@ -141,29 +130,65 @@ export const AddEmployee: React.FunctionComponent = () => {
 		setFetchCompaniesLoading(false);
 	};
 
+	const [employee, setEmployee] = useState<EmployeeUpdateType>({
+		id: selectedEmployee.id,
+		name: selectedEmployee.name,
+		companyId: selectedEmployee.companyId,
+		dependentsNumber: selectedEmployee.dependentsNumber,
+		rg: selectedEmployee.rg,
+		cpf: selectedEmployee.cpf,
+		salary: selectedEmployee.salary,
+		address: {
+			id: selectedEmployee.address?.id || 0,
+			street: selectedEmployee.address?.street,
+			number: selectedEmployee.address?.number,
+			complement: selectedEmployee.address?.complement,
+			neighborhood: selectedEmployee.address?.neighborhood,
+			city: selectedEmployee.address?.city,
+			uf: selectedEmployee.address?.uf,
+			cep: selectedEmployee.address?.cep,
+		},
+	});
+
 	useEffect(() => {
 		dispatch(clearRequestAction());
 		fetchCompanies();
-	}, []);
+		setEmployee({
+			id: selectedEmployee.id,
+			name: selectedEmployee.name,
+			companyId: selectedEmployee.companyId,
+			dependentsNumber: selectedEmployee.dependentsNumber,
+			rg: selectedEmployee.rg,
+			cpf: selectedEmployee.cpf,
+			salary: selectedEmployee.salary,
+			address: {
+				id: selectedEmployee.address?.id || 0,
+				street: selectedEmployee.address?.street,
+				number: selectedEmployee.address?.number,
+				complement: selectedEmployee.address?.complement,
+				neighborhood: selectedEmployee.address?.neighborhood,
+				city: selectedEmployee.address?.city,
+				uf: selectedEmployee.address?.uf,
+				cep: selectedEmployee.address?.cep,
+			},
+		});
+	}, [selectedEmployee]);
 
 	useRequestVerification({
 		request,
-		successMessage: 'Funcionário criado com sucesso',
+		successMessage: 'Funcionário atualizado com sucesso',
 		successNavigate: RoutesEnum.EMPLOYEE_LIST,
-		type: {
-			actualType: previousType,
-			expectedType: EmployeeActionsTypes.CREATE_SUCCESS,
-		},
 	});
 
 	const handleSubmitForm = (event): void => {
 		event.preventDefault();
-		dispatch(createAction(employee));
+		dispatch(updateAction(employee));
 	};
 
 	const onCepInputChange = async (value): Promise<any> => {
 		setEmployee({ ...employee, address: {
 			...employee.address,
+			id: employee.address?.id || 0,
 			cep: value,
 		}, });
 
@@ -180,6 +205,7 @@ export const AddEmployee: React.FunctionComponent = () => {
 
 		setEmployee({ ...employee, address: {
 			...employee.address,
+			id: employee.address?.id || 0,
 			street: json.logradouro,
 			complement: json.complemento,
 			neighborhood: json.bairro,
@@ -196,24 +222,19 @@ export const AddEmployee: React.FunctionComponent = () => {
 		}
 		
 		if (property.split('.')[1]) {
-			setEmployee({ ...employee, address: { ...employee.address, [property.split('.')[1]]: event.target.value, }, });
+			setEmployee({ ...employee, address: { ...employee.address, id: employee.address?.id || 0, [property.split('.')[1]]: event.target.value, }, });
 			return;
 		}
 		
 		setEmployee({ ...employee, [property]: event.target.value, });
 	};
-
+	
 	return (
-		<Box sx={{ display:'flex', flexDirection:'column', gap: 2, p: 2, }}>
-			<BackdropLoading open={loading && fetchCompaniesLoading}/>
+		<DialogStyled open={open} onClose={onClose}>
+			<BackdropLoading open={loading}/>
 
-			<Grid display="flex" flexWrap="wrap" alignItems="center">
-				<Typography variant="h5" sx={{ flexGrow: 1, }}>Criar funcionário</Typography>
-				<IconButton onClick={(): any => navigate(RoutesEnum.EMPLOYEE_LIST)}>
-					<NavigateBeforeRounded sx={{ fontSize: '1.3em', }}/>
-				</IconButton>
-			</Grid>
-			
+			<Typography variant="h5" sx={{ flexGrow: 1, mb: 5, }}>Editar Funcionário</Typography>
+
 			<form onSubmit={handleSubmitForm}>
 				<FormControl>
 					<Grid container columnSpacing={2} rowSpacing={2} sx={{ alignItems: 'flex-start', }}>
@@ -226,7 +247,8 @@ export const AddEmployee: React.FunctionComponent = () => {
 									error={!!getRequestErrorByField(request, input.name)}
 									helperText={getRequestErrorByField(request, input.name)?.message}
 									onChange={(event): void => handleChangeEmployeeInput(input.name, event)}
-									value={input.name.split('.')[1] ? employee.address[input.name.split('.')[1]] : employee[input.name]}
+									value={input.name.split('.')[1] ? (employee.address && employee.address[input.name.split('.')[1]]) : employee[input.name]}
+									disabled={input.disabled ?? false}
 									fullWidth
 								>
 									{input.select && input.select.map(item => (
@@ -239,11 +261,11 @@ export const AddEmployee: React.FunctionComponent = () => {
 						))}
 
 						<Grid item xs={12} md={12}>
-							<MainButton type="submit" sx={{ width: '200px', }}>Salvar</MainButton>
+							<MainButton type="submit" sx={{ width: '200px', }}>Atualizar</MainButton>
 						</Grid>
 					</Grid>
 				</FormControl>
 			</form>
-		</Box>
+		</DialogStyled>
 	);
 };

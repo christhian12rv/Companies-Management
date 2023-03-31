@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FormControl, Grid, IconButton, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
+import { FormControl, Grid, MenuItem, TextField, Typography } from '@mui/material';
 import { DialogStyled } from './UpdateUserModal.styled';
-import { LockRounded, NavigateBeforeRounded } from '@mui/icons-material';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -41,22 +40,22 @@ export const UpdateUserModal: React.FunctionComponent<UpdateUserModalProps> = ({
 		{
 			name: 'name',
 			type: 'text',
-			label: 'Nome',
+			label: 'Nome *',
 		},
 		{
 			name: 'cpf',
 			type: 'text',
-			label: 'CPF',
+			label: 'CPF *',
 		},
 		{
 			name: 'email',
 			type: 'text',
-			label: 'Email',
+			label: 'Email *',
 		},
 		{
 			name: 'type',
 			type: 'text',
-			label: 'Tipo',
+			label: 'Tipo *',
 			select: [
 				{
 					value: UserTypeEnum.STANDARD,
@@ -95,7 +94,8 @@ export const UpdateUserModal: React.FunctionComponent<UpdateUserModalProps> = ({
 		successNavigate: RoutesEnum.USER_LIST,
 	});
 
-	const handleSubmitForm = (): void => {
+	const handleSubmitForm = (event): void => {
+		event.preventDefault();
 		dispatch(updateAction(user));
 	};
 
@@ -109,35 +109,37 @@ export const UpdateUserModal: React.FunctionComponent<UpdateUserModalProps> = ({
 
 			<Typography variant="h5" sx={{ flexGrow: 1, mb: 5, }}>Editar Usuário</Typography>
 
-			<FormControl>
-				<Grid container columnSpacing={2} rowSpacing={2} sx={{ alignItems: 'flex-start', }}>
-					{inputs.map(input => (
-						<Grid key={input.name} item xs={12} md={6}>
-							<TextField
-								select={!!input.select}
-								type={input.type}
-								label={input.label}
-								error={!!getRequestErrorByField(request, input.name)}
-								helperText={getRequestErrorByField(request, input.name)?.message}
-								onChange={(event): void => handleChangeUserInput(input.name, event)}
-								value={user[input.name]}
-								disabled={input.disabled ?? false}
-								fullWidth
-							>
-								{input.select && input.select.map(item => (
-									<MenuItem key={item.value} value={item.value}>
-										{item.text}
-									</MenuItem>
-								))}
-							</TextField>
-						</Grid>
-					))}
+			<form onSubmit={handleSubmitForm}>
+				<FormControl>
+					<Grid container columnSpacing={2} rowSpacing={2} sx={{ alignItems: 'flex-start', }}>
+						{inputs.map(input => (
+							<Grid key={input.name} item xs={12} md={6}>
+								<TextField
+									select={!!input.select}
+									type={input.type}
+									label={input.label}
+									error={!!getRequestErrorByField(request, input.name)}
+									helperText={getRequestErrorByField(request, input.name)?.message}
+									onChange={(event): void => handleChangeUserInput(input.name, event)}
+									value={user[input.name]}
+									disabled={input.disabled ?? false}
+									fullWidth
+								>
+									{input.select && input.select.map(item => (
+										<MenuItem key={item.value} value={item.value}>
+											{item.text}
+										</MenuItem>
+									))}
+								</TextField>
+							</Grid>
+						))}
 
-					<Grid item xs={12} md={12}>
-						<MainButton onClick={handleSubmitForm} type="submit" sx={{ width: '200px', }}>Atualizar</MainButton>
+						<Grid item xs={12} md={12}>
+							<MainButton type="submit" sx={{ width: '200px', }}>Atualizar</MainButton>
+						</Grid>
 					</Grid>
-				</Grid>
-			</FormControl>
+				</FormControl>
+			</form>
 		</DialogStyled>
 	);
 };

@@ -19,6 +19,15 @@ export const findById = Joi.object().keys({
 });
 
 export const create = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	name: Joi
 		.string()
 		.required()
@@ -44,7 +53,7 @@ export const create = Joi.object().keys({
 			logger.info('COMPANY', value);
 			const company = await CompanyService.findById(value);
 			if (!company)
-				throw new JoiCustomError(`Não existe uma empresa com id ${value}`, 'companyId');
+				throw new JoiCustomError('Empresa inválida ou não existe', 'companyId');
 		}),
 
 	dependentsNumber: Joi
@@ -115,10 +124,19 @@ export const create = Joi.object().keys({
 		.messages({
 			'any.required': 'Endereço é obrigatório',
 		}),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const update = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	id: Joi
 		.number()
 		.integer()
@@ -159,7 +177,7 @@ export const update = Joi.object().keys({
 			const company = await CompanyService.findById(value);
 
 			if (!company)
-				throw new JoiCustomError(`Não existe uma empresa com id ${value}`, 'companyId');
+				throw new JoiCustomError('Empresa inválida ou não existe', 'companyId');
 		}),
 
 	dependentsNumber: Joi
@@ -226,10 +244,19 @@ export const update = Joi.object().keys({
 
 	address: AddressValidator.update
 		.optional(),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const _delete = Joi.object().keys({
+	token: Joi
+		.string()
+		.required()
+		.messages({
+			'string.base': 'Token é inválido',
+			'string.empty': 'Token é inválido',
+			'any.required': 'Token é obrigatório',
+		}),
+
 	id: Joi
 		.number()
 		.integer()
@@ -245,4 +272,4 @@ export const _delete = Joi.object().keys({
 			if (!Employee)
 				throw new JoiCustomError(`Não existe um usuário com id ${value}`, 'id');
 		}),
-});
+}).options({ abortEarly: false, });

@@ -154,7 +154,7 @@ export const update = Joi.object().keys({
 			'string.empty': 'CEP é inválido',
 			'string.pattern.base': 'CEP é inválido',
 		}),
-}).options({ abortEarly : false, allowUnknown: true, });
+}).options({ abortEarly : false, });
 
 
 export const _delete = Joi.object().keys({
@@ -173,4 +173,4 @@ export const _delete = Joi.object().keys({
 			if (!User)
 				throw new JoiCustomError(`Não existe um endereço com id ${value}`, 'id');
 		}),
-});
+}).options({ abortEarly: false, });

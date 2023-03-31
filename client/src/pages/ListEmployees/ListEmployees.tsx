@@ -3,8 +3,8 @@ import { IconButton, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { GridActionsCellItem, GridColDef, GridRowParams } from '@mui/x-data-grid';
 import dayjs from 'dayjs';
-import { findAll as findAllAction, clearRequest as clearRequestAction } from '../../store/features/company/company.actions';
-import CompanyType from '../../types/Company/CompanyType';
+import { findAll as findAllAction, clearRequest as clearRequestAction } from '../../store/features/employee/employee.actions';
+import EmployeeType from '../../types/Employee/EmployeeType';
 import { enqueueSnackbar } from 'notistack';
 import { MainButton } from '../../components/MainButton';
 import { useNavigate } from 'react-router';
@@ -14,31 +14,31 @@ import { AddressModal } from '../../components/AddressModal';
 import AddressType from '../../types/Address/AddressType';
 import { useTypedSelector } from '../../store/utils/useTypedSelector';
 import UserTypeEnum from '../../types/enums/User/UserTypeEnum';
-import { CompanyActionsTypes } from '../../store/features/company/company.types';
-import { UpdateCompanyModal } from '../../components/UpdateCompanyModal';
+import { EmployeeActionsTypes } from '../../store/features/employee/employee.types';
+import { UpdateEmployeeModal } from '../../components/UpdateEmployeeModal';
 import { DataGridCustom } from '../../components/DataGridCustom';
 import { useDispatch } from 'react-redux';
 import { ThunkDispatch } from '@reduxjs/toolkit';
 
-export const ListCompanies: React.FunctionComponent = () => {
+export const ListEmployees: React.FunctionComponent = () => {
 	const navigate = useNavigate();
-	const [rows, setRows] = useState<CompanyType[]>([]);
+	const [rows, setRows] = useState<EmployeeType[]>([]);
 	const [loading, setLoading] = useState(false);
-	const [companyClicked, setCompanyClicked] = useState<CompanyType | undefined>(undefined);
-	const [editCompanyModalOpen, setEditCompanyModalOpen] = useState(false);
+	const [employeeClicked, setEmployeeClicked] = useState<EmployeeType | undefined>(undefined);
+	const [editEmployeeModalOpen, setEditEmployeeModalOpen] = useState(false);
 	const [addressModalOpen, setAddressModalOpen] = useState(false);
 	const [addressClicked, setAddressClicked] = useState<AddressType | null>(null);
 	const { user: loggedUser, } = useTypedSelector((state) => state.auth);
-	const { request, previousType, } = useTypedSelector((state) => state.company);
+	const { request, previousType, } = useTypedSelector((state) => state.employee);
 	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-	const handleClickEditCompany = (company: CompanyType): void => {
-		setCompanyClicked(company);
-		setEditCompanyModalOpen(true);
+	const handleClickEditEmployee = (employee: EmployeeType): void => {
+		setEmployeeClicked(employee);
+		setEditEmployeeModalOpen(true);
 	};
 
-	const handleEditCompanyModalClose = (): void => {
-		setEditCompanyModalOpen(false);
+	const handleEditEmployeeModalClose = (): void => {
+		setEditEmployeeModalOpen(false);
 	};
 
 	const handleAddressOpenModalClick = (params): void => {
@@ -60,36 +60,40 @@ export const ListCompanies: React.FunctionComponent = () => {
 			headerAlign: 'left',
 		},
 		{
-			field: 'companyName',
-			headerName: 'Razão Social',
+			field: 'name',
+			headerName: 'Nome',
 			type: 'string',
 			flex: 1,
-			minWidth: 250,
+			minWidth: 200,
 		},
 		{
-			field: 'fantasyName',
-			headerName: 'Nome Fantasia',
+			field: 'company.companyName',
+			headerName: 'Empresa',
 			type: 'string',
 			flex: 1,
-			minWidth: 250,
+			minWidth: 200,
+			renderCell: (params): any => params.row.company.fantasyName,
 		},
 		{
-			field: 'cnpj',
-			headerName: 'CNPJ',
+			field: 'dependentsNumber',
+			headerName: 'Dependentes',
+			type: 'number',
+			flex: 1,
+			minWidth: 100,
+		},
+		{
+			field: 'rg',
+			headerName: 'RG',
 			type: 'string',
 			flex: 1,
 			minWidth: 150,
 		},
 		{
-			field: 'stateRegistration',
-			headerName: 'Inscrição Estadual',
+			field: 'cpf',
+			headerName: 'CPF',
 			type: 'string',
 			flex: 1,
 			minWidth: 150,
-			renderCell: (params): any => {
-				console.log(params);
-				return params.row.stateRegistration || '-';
-			},
 		},
 		{
 			field: 'address',
@@ -102,6 +106,20 @@ export const ListCompanies: React.FunctionComponent = () => {
 					<Visibility />
 				</IconButton>
 			),
+		},
+		{
+			field: 'salary',
+			headerName: 'Salário',
+			type: 'number',
+			flex: 1,
+			minWidth: 100,
+		},
+		{
+			field: 'discount',
+			headerName: 'Desconto',
+			type: 'number',
+			flex: 1,
+			minWidth: 100,
 		},
 		{
 			field: 'createdAt',
@@ -117,12 +135,12 @@ export const ListCompanies: React.FunctionComponent = () => {
 			field: 'actions',
 			type: 'actions',
 			getActions: (params: GridRowParams) => [
-				<GridActionsCellItem key={0} icon={<EditRounded />} onClick={(): void => handleClickEditCompany(params.row)} label="Editar" />
+				<GridActionsCellItem key={0} icon={<EditRounded />} onClick={(): void => handleClickEditEmployee(params.row)} label="Editar" />
 			],
 		});
 	}
       
-	const fetchCompanies = async (): Promise<void> => {
+	const fetchEmployees = async (): Promise<void> => {
 		setLoading(true);
 		const [response, json] = await findAllAction();
 		if (response.status === 500) {
@@ -130,11 +148,11 @@ export const ListCompanies: React.FunctionComponent = () => {
 			setLoading(false);
 			return;
 		}
-		if (json.companies) {
-			json.companies.map(company => {
-				company.createdAt = dayjs(company.createdAt).format('DD/MM/YYYY H:mm:ss');
-			}) as CompanyType[];
-			setRows(json.companies);
+		if (json.employees) {
+			json.employees.map(employee => {
+				employee.createdAt = dayjs(employee.createdAt).format('DD/MM/YYYY H:mm:ss');
+			}) as EmployeeType[];
+			setRows(json.employees);
 		}
 		
 		setLoading(false);
@@ -142,25 +160,25 @@ export const ListCompanies: React.FunctionComponent = () => {
 
 	useEffect(() => {
 		dispatch(clearRequestAction());
-		fetchCompanies();
+		fetchEmployees();
 	}, []);
 
 	useEffect(() => {
-		if (previousType === CompanyActionsTypes.UPDATE_SUCCESS) {
-			handleEditCompanyModalClose();
-			fetchCompanies();
+		if (previousType === EmployeeActionsTypes.UPDATE_SUCCESS) {
+			handleEditEmployeeModalClose();
+			fetchEmployees();
 		}
 	}, [request]);
 
-	const handleAddCompanyClick = (): void => {
-		navigate(RoutesEnum.COMPANY_CREATE);
+	const handleAddEmployeeClick = (): void => {
+		navigate(RoutesEnum.EMPLOYEE_CREATE);
 	};
 
 	return (
 		<Box sx={{ display:'flex', flexDirection:'column', gap: 2, p: 2, }}>
 
-			<Typography variant="h5">Empresas</Typography>
-			<MainButton onClick={handleAddCompanyClick} sx={{ minWidth: '200px', alignSelf: 'flex-end', }}>Criar Empresa</MainButton>
+			<Typography variant="h5">Funcionários</Typography>
+			<MainButton onClick={handleAddEmployeeClick} sx={{ minWidth: '200px', alignSelf: 'flex-end', }}>Criar Funcionário</MainButton>
 
 			<Box>
 				<DataGridCustom
@@ -176,7 +194,7 @@ export const ListCompanies: React.FunctionComponent = () => {
 				/>
 			</Box>
 
-			<UpdateCompanyModal company={companyClicked} open={editCompanyModalOpen} onClose={handleEditCompanyModalClose}/>
+			<UpdateEmployeeModal employee={employeeClicked} open={editEmployeeModalOpen} onClose={handleEditEmployeeModalClose}/>
 		</Box>
 	);
 };

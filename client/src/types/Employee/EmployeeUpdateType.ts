@@ -1,11 +1,13 @@
+import AddressUpdateType from '../Address/AddressUpdateType';
+
 interface EmployeeUpdateType {
-    id: number;
+  id: number;
 	name?: string;
 	companyId?: number;
 	dependentsNumber?: number;
 	rg?: string;
 	cpf?: string;
-	addressId?: number;
+	address: AddressUpdateType;
 	salary?: number;
 	discount?: number;
 }

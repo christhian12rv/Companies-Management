@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { GlobalStyles } from '@mui/material';
 import global from './styles/global';
 import { MainLayout } from './pages/layout/MainLayout';
@@ -17,6 +17,7 @@ import { ListCompanies } from './pages/ListCompanies';
 import { ThemeProviderCustom } from './components/ThemeProviderCustom';
 import { VerifyAdminAuth } from './components/utils/VerifyAdminAuth/VerifyAdminAuth';
 import { AddEmployee } from './pages/AddEmployee/AddEmployee';
+import { ListEmployees } from './pages/ListEmployees';
 
 export const App: React.FunctionComponent = () => {
 	
@@ -27,12 +28,15 @@ export const App: React.FunctionComponent = () => {
 				<SnackbarProviderCustom />
 				<BrowserRouter>
 					<Routes>
+						<Route index element={<Navigate to={RoutesEnum.USER_LIST} />} />
+
 						<Route element={<VerifyAuth />}>
 							<Route element={<MainLayout />} >
 								<Route path={RoutesEnum.USER_LIST} element={<ListUsers />} />
 								<Route path={RoutesEnum.COMPANY_CREATE} element={<AddCompany />} />
 								<Route path={RoutesEnum.COMPANY_LIST} element={<ListCompanies />} />
 								<Route path={RoutesEnum.EMPLOYEE_CREATE} element={<AddEmployee />} />
+								<Route path={RoutesEnum.EMPLOYEE_LIST} element={<ListEmployees />} />
 
 								<Route element={<VerifyAdminAuth />}>
 									<Route path={RoutesEnum.USER_REGISTER} element={<AddUser />} />

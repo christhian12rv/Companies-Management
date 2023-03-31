@@ -1,1 +1,1 @@
-export * from './UpdateUserModal';
+export * from './UpdateCompanyModal';
