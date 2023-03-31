@@ -190,8 +190,8 @@ Ou vá para a pasta /server e execute
   <img width="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/list_users.png" alt="Listagem de usuários">
   <img width="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/register_user.png" alt="Registro de usuário">
   <img width="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/list_users_dark_mode.png" alt="Listagem de usuários em dark mode">
-  <img width="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/create_company_mobile.png" alt="Criação de empresas mobile">
-  <img width="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/list_employees_mobile_dark_mode.png" alt="Listagem de funcionários mobile em dark mode">
+  <img height="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/create_company_mobile.png" alt="Criação de empresas mobile">
+  <img height="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/list_employees_mobile_dark_mode.png" alt="Listagem de funcionários mobile em dark mode">
   <img width="100%" src="https://github.com/christhian12rv/Companies-Management/blob/master/img/login.png" alt="Login">
 </p>
 
