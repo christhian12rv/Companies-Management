@@ -125,7 +125,7 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 				
 				<Box sx={{ flexGrow: 1, overflowX: 'hidden',  }}>
 					{!isMobile ? <DrawerHeader /> : <></>}
-					<Box sx={{ maxHeight: 'calc(98vh - 100px)', overflowY: 'auto', overflowX: 'hidden', textAlign: 'start', mt: 0, pb: 5, pt: isMobile ? 5 : 0, px: 3, }}>
+					<Box sx={{ maxHeight: 'calc(98vh - 100px)', overflowY: 'auto', overflowX: 'hidden', textAlign: 'start', mt: isMobile ? 5 : 0, pb: isMobile ? 0 : 5,  pt: 0, px: 3, }}>
 						<Outlet/>
 					</Box>
 				</Box>

@@ -29,7 +29,7 @@ export default class App {
 
 	private listen(): void {
 		this.express.listen(config.port, () => {
-			logger.info(`Server running on: ${config.serverUrl}`);
+			logger.info(`Server running on: ${config.serverUrl}${config.port}`);
 		});
 	}
 
