@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:latest
+    container_name: companies-management-postgres
+    hostname: postgres
+    ports:
+      - 8001:8001
+    expose:
+      - 8001
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=companies-management
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    command: -p 8001
+
+  server:
+    stdin_open: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: companies-management-server
+    depends_on:
+      - postgres
+    env_file:
+      - ./server/.env-docker
+    ports:
+      - "9000:9000"
+    restart: always
+
+  client:
+    build: ./client
+    container_name: esports-management-client
+    ports:
+      - '3000:3000'
+volumes:
+  postgres-data:
