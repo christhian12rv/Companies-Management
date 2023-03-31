@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AssignmentIndRounded, BusinessRounded, DomainAddRounded, DomainRounded, ExpandLess, ExpandMore, GroupAddRounded, GroupRounded, PowerSettingsNewRounded } from '@mui/icons-material';
-import { Box, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Collapse, Divider, List, ListItemIcon, ListItemText } from '@mui/material';
 import { LinkUnstyled } from '../../../../components/LinkUnstyled';
 import { DrawerHeader } from '../MainLayout.styled';
 import { ListItemButtonStyled, ListSubItemButtonStyled, LogoTitle } from './SidebarDrawer.styled';
@@ -12,10 +12,9 @@ import UserTypeEnum from '../../../../types/enums/User/UserTypeEnum';
 
 type SidebarDrawerProps = {
 	openSidebar: boolean;
-	isMobile: boolean;
 }
 
-export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ openSidebar, isMobile, }) => {
+export const SidebarDrawer: React.FunctionComponent<SidebarDrawerProps> = ({ openSidebar, }) => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [expandedItems, setExpandedItems] = useState<{ name: string; expanded: boolean; }[]>([]);

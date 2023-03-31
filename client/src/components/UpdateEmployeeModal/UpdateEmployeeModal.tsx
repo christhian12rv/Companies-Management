@@ -231,7 +231,7 @@ export const UpdateEmployeeModal: React.FunctionComponent<UpdateEmployeeModalPro
 	
 	return (
 		<DialogStyled open={open} onClose={onClose}>
-			<BackdropLoading open={loading}/>
+			<BackdropLoading open={loading && fetchCompaniesLoading}/>
 
 			<Typography variant="h5" sx={{ flexGrow: 1, mb: 5, }}>Editar Funcionário</Typography>
 

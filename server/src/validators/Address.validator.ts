@@ -1,5 +1,6 @@
 import * as Joi from 'joi';
 import JoiCustomError from '../errors/JoiCustomError';
+import AddressService from '../services/Address.service';
 import UserService from '../services/User.service';
 import brazillianUfsArray from '../utils/brazillianUfsArray';
 
@@ -87,7 +88,7 @@ export const update = Joi.object().keys({
 			'any.required':'Id é obrigatório',
 		})
 		.external(async (value) => {
-			const user = await UserService.findById(value);
+			const user = await AddressService.findById(value);
 
 			if (!user)
 				throw new JoiCustomError(`Não existe um endereço com id ${value}`, 'id');

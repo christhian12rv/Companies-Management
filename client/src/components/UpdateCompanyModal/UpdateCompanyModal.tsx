@@ -25,8 +25,7 @@ type UpdateCompanyModalProps = {
 export const UpdateCompanyModal: React.FunctionComponent<UpdateCompanyModalProps> = ({ company: selectedCompany, open, onClose, }) => {
 	if (!selectedCompany)
 		return <></>;
-	
-	const navigate = useNavigate();
+		
 	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 	const { request, loading, } = useTypedSelector((state) => state.company);
 

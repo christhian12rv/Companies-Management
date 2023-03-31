@@ -40,7 +40,7 @@ class UserMiddleware {
 			req.body.data = data;
 		}catch (e) {
 			const message = 'Ocorreram erros internos ao criar usuário';
-			logger.error(e);
+			logger.error(message);
 
 			return res.status(500).send({ message, });
 		}

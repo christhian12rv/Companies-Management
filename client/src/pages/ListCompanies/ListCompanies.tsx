@@ -86,10 +86,7 @@ export const ListCompanies: React.FunctionComponent = () => {
 			type: 'string',
 			flex: 1,
 			minWidth: 150,
-			renderCell: (params): any => {
-				console.log(params);
-				return params.row.stateRegistration || '-';
-			},
+			renderCell: (params): any => params.row.stateRegistration || '-',
 		},
 		{
 			field: 'address',
@@ -109,18 +106,15 @@ export const ListCompanies: React.FunctionComponent = () => {
 			type: 'Date',
 			flex: 1,
 			minWidth: 170,
-		}
-	];
-
-	if (loggedUser?.type === UserTypeEnum.ADMIN) {
-		columns.push({
+		},
+		{
 			field: 'actions',
 			type: 'actions',
 			getActions: (params: GridRowParams) => [
 				<GridActionsCellItem key={0} icon={<EditRounded />} onClick={(): void => handleClickEditCompany(params.row)} label="Editar" />
 			],
-		});
-	}
+		}
+	];
       
 	const fetchCompanies = async (): Promise<void> => {
 		setLoading(true);

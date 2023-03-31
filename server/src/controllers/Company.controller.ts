@@ -15,7 +15,7 @@ class CompanyController {
 			return res.status(200).send({ message, companies, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao buscar empresas';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -35,7 +35,7 @@ class CompanyController {
 			return res.status(200).send({ message, company, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao buscar empresa';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -55,7 +55,7 @@ class CompanyController {
 			return res.status(200).send({ message, company, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao criar empresa';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -76,7 +76,7 @@ class CompanyController {
 			return res.status(200).send({ message, company, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao atualizar empresa';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -96,7 +96,7 @@ class CompanyController {
 			return res.status(200).send({ message, company, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao criar empresa';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}

@@ -15,7 +15,7 @@ class UserController {
 			return res.status(200).send({ message, users, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao buscar usuários';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -35,7 +35,7 @@ class UserController {
 			return res.status(200).send({ message, user, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao buscar usuário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -55,7 +55,7 @@ class UserController {
 			return res.status(200).send({ message, user, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao criar usuário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -76,7 +76,7 @@ class UserController {
 			return res.status(200).send({ message, user, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao atualizar usuário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -96,7 +96,7 @@ class UserController {
 			return res.status(200).send({ message, user, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao deletar usuário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -116,7 +116,7 @@ class UserController {
 			return res.status(200).send({ message, token, user, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao logar usuário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -135,7 +135,7 @@ class UserController {
 			return res.status(200).send({ message, user, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao logar usuário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}

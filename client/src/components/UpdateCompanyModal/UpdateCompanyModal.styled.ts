@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import { styled } from '@mui/system';
 
-export const DialogStyled = styled(Dialog)(({ theme, }) => ({
+export const DialogStyled = styled(Dialog)(() => ({
 	'& .MuiPaper-root': {
 		borderRadius: '10px',
 		width: '100%',

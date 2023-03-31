@@ -114,7 +114,7 @@ export const update = Joi.object().keys({
 			const Company = await CompanyService.findById(value);
 
 			if (!Company)
-				throw new JoiCustomError(`Não existe um usuário com id ${value}`, 'id');
+				throw new JoiCustomError(`Não existe uma empresa com id ${value}`, 'id');
 		}),
 
 	companyName: Joi
@@ -209,6 +209,6 @@ export const _delete = Joi.object().keys({
 			const Company = await CompanyService.findById(value);
 
 			if (!Company)
-				throw new JoiCustomError(`Não existe um usuário com id ${value}`, 'id');
+				throw new JoiCustomError(`Não existe uma empresa com id ${value}`, 'id');
 		}),
 }).options({ abortEarly: false, });

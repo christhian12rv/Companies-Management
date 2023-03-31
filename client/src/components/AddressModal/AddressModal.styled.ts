@@ -5,7 +5,7 @@ export const Title = styled(Typography)(({ theme, }) => ({
 	color: theme.palette.primary.dark,
 }));
 
-export const DialogStyled = styled(Dialog, { shouldForwardProp: (prop) => prop !== 'address', })(({ theme, }) => ({
+export const DialogStyled = styled(Dialog, { shouldForwardProp: (prop) => prop !== 'address', })(() => ({
 	'& .MuiPaper-root': {
 		borderRadius: '10px',
 		width: '400px',

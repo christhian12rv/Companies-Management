@@ -25,8 +25,7 @@ type UpdateUserModalProps = {
 export const UpdateUserModal: React.FunctionComponent<UpdateUserModalProps> = ({ user: selectedUser, open, onClose, }) => {
 	if (!selectedUser)
 		return <></>;
-	
-	const navigate = useNavigate();
+
 	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 	const { request, loading, } = useTypedSelector((state) => state.user);
 

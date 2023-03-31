@@ -12,7 +12,7 @@ export default defineConfig({
 		port: 3000,
 		proxy: {
 			'/api': {
-				target: 'http://companies-management-server:9000/',
+				target: 'http://localhost:9000/',
 				changeOrigin: true,
 				secure: false,
 				ws: true,

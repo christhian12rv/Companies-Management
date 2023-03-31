@@ -1,4 +1,4 @@
-import { AppBar, Box, CSSObject, Drawer, Grid, ListItem, styled, Theme } from '@mui/material';
+import { AppBar, Box, CSSObject, Drawer, Grid, styled, Theme } from '@mui/material';
 
 const drawerWidth = 240;
 
@@ -71,9 +71,7 @@ export const AppBarStyled = styled(AppBar, {
 	}),
 }));
 
-export const AppBarMobileStyled = styled(AppBar, {
-	shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarStyledProps>(({ theme, open, }) => ({
+export const AppBarMobileStyled = styled(AppBar)<AppBarStyledProps>(({ theme, }) => ({
 	transition: theme.transitions.create(['width', 'margin'], {
 		easing: theme.transitions.easing.sharp,
 		duration: theme.transitions.duration.leavingScreen,
@@ -106,13 +104,12 @@ export const DrawerStyled = styled(Drawer, { shouldForwardProp: (prop) => prop !
 	})
 );
 
-export const DrawerMobileStyled = styled(Drawer)(
-	({ theme, }) => ({
-		'& .MuiDrawer-paper': {
-			boxSizing: 'border-box',
-			width: drawerWidth,
-			overflow: 'hidden',
-			padding: '0 1em',
-		},
-	})
+export const DrawerMobileStyled = styled(Drawer)(() => ({
+	'& .MuiDrawer-paper': {
+		boxSizing: 'border-box',
+		width: drawerWidth,
+		overflow: 'hidden',
+		padding: '0 1em',
+	},
+})
 );

@@ -64,7 +64,7 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 			<React.Fragment>
 				<CssBaseline />
 				<HideOnScroll {...props}>
-					<AppBarMobileStyled  open={openSidebar}>
+					<AppBarMobileStyled>
 						<Toolbar>
 							<AppBarContent
 								handleDrawerToggleSidebar={handleDrawerToggleSidebar}
@@ -110,7 +110,6 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 				>
 					<SidebarDrawer
 						openSidebar={openSidebar}
-						isMobile={isMobile}
 					/>
 				</DrawerMobileStyled>
 
@@ -119,7 +118,6 @@ export const MainLayout: React.FunctionComponent<MainLayoutProps> = ({ window, }
 				}}>
 					<SidebarDrawer
 						openSidebar={openSidebar}
-						isMobile={isMobile}
 					/>
 				</DrawerStyled>
 				

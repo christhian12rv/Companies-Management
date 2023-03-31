@@ -127,18 +127,15 @@ export const ListEmployees: React.FunctionComponent = () => {
 			type: 'Date',
 			flex: 1,
 			minWidth: 170,
-		}
-	];
-
-	if (loggedUser?.type === UserTypeEnum.ADMIN) {
-		columns.push({
+		},
+		{
 			field: 'actions',
 			type: 'actions',
 			getActions: (params: GridRowParams) => [
 				<GridActionsCellItem key={0} icon={<EditRounded />} onClick={(): void => handleClickEditEmployee(params.row)} label="Editar" />
 			],
-		});
-	}
+		}
+	];
       
 	const fetchEmployees = async (): Promise<void> => {
 		setLoading(true);

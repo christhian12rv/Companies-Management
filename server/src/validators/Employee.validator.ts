@@ -50,8 +50,8 @@ export const create = Joi.object().keys({
 			'any.required':'Empresa é obrigatória',
 		})
 		.external(async (value) => {
-			logger.info('COMPANY', value);
 			const company = await CompanyService.findById(value);
+
 			if (!company)
 				throw new JoiCustomError('Empresa inválida ou não existe', 'companyId');
 		}),
@@ -83,6 +83,7 @@ export const create = Joi.object().keys({
 					rg: value,
 				},
 			});
+			
 
 			if (employee)
 				throw new JoiCustomError(`Já existe um usuário com rg ${value}`, 'rg');
@@ -198,13 +199,18 @@ export const update = Joi.object().keys({
 			'string.base': 'RG é inválido',
 			'string.pattern.base': 'RG é inválido',
 		})
-		.external(async (value) => {
+		.external(async (value, helpers) => {
 			if (!value)
 				return;
 
-			const employee = await Database.getInstance().getDatabase().employee.findUnique({
+			const employee = await Database.getInstance().getDatabase().employee.findFirst({
 				where: {
-					rg: value,
+					AND: {
+						id: {
+							not: helpers.state.ancestors[0].id,
+						},
+						rg: value,
+					},
 				},
 			});
 
@@ -220,13 +226,18 @@ export const update = Joi.object().keys({
 			'string.base': 'CPF é inválido',
 			'string.pattern.base': 'CPF é inválido',
 		})
-		.external(async (value) => {
+		.external(async (value, helpers) => {
 			if (!value)
 				return;
 
-			const employee = await Database.getInstance().getDatabase().employee.findUnique({
+			const employee = await Database.getInstance().getDatabase().employee.findFirst({
 				where: {
-					cpf: value,
+					AND: {
+						id: {
+							not: helpers.state.ancestors[0].id,
+						},
+						cpf: value,
+					},
 				},
 			});
 

@@ -1,4 +1,4 @@
-import { ThemeProvider, ThemeProviderProps } from '@emotion/react';
+import { ThemeProvider } from '@emotion/react';
 import React from 'react';
 import { useTypedSelector } from '../../store/utils/useTypedSelector';
 import theme from '../../styles/theme';

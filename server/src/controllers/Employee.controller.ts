@@ -15,7 +15,7 @@ class EmployeeController {
 			return res.status(200).send({ message, employees, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao buscar funcionários';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -35,7 +35,7 @@ class EmployeeController {
 			return res.status(200).send({ message, employee, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao buscar funcionário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -55,7 +55,7 @@ class EmployeeController {
 			return res.status(200).send({ message, employee, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao criar funcionário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -76,7 +76,7 @@ class EmployeeController {
 			return res.status(200).send({ message, employee, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao atualizar funcionário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}
@@ -96,7 +96,7 @@ class EmployeeController {
 			return res.status(200).send({ message, employee, });
 		} catch(e) {
 			const message = 'Ocorreram erros internos ao criar funcionário';
-			logger.error(e);
+			logger.error(message, e);
 
 			return res.status(500).send({ message, });
 		}

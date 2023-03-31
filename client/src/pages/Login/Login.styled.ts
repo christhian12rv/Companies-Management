@@ -1,4 +1,4 @@
-import { AccountCircle, AccountCircleRounded } from '@mui/icons-material';
+import { AccountCircle } from '@mui/icons-material';
 import { Card, styled } from '@mui/material';
 
 export const LoginCard = styled(Card)(() => ({

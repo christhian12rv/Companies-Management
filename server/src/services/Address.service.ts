@@ -3,6 +3,16 @@ import Database from '../config/Database';
 import AddressCreate from '../types/Address/AddressCreate';
 
 class AddressService {
+	public async findById(id: number): Promise<Address> {
+		const address = await Database.getInstance().getDatabase().address.findUnique({
+			where: {
+				id,
+			},
+		});
+
+		return address;
+	}
+
 	public async create(data: AddressCreate): Promise<Address> {
 		const address = await Database.getInstance().getDatabase().address.create({
 			data: {
