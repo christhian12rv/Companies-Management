@@ -141,7 +141,7 @@ VALUES ('Usuário administrador', '111.111.111-11', 'admin@hotmail.com', 'senha 
     ```sh
     PORT=PORTA_DO_SEU_SERVIDOR
     SERVER_URL=http://localhost/
-    DATABASE_URL=postgresql://{USUARIO}:{SENHA}@{HOST}:{PORTA}/esports-management?schema=public&connect_timeout=300
+    DATABASE_URL=postgresql://{USUARIO}:{SENHA}@{HOST}:{PORTA}/companies-management?schema=public&connect_timeout=300
     JWT_SECRET=chave_aleatoria
     ```
 2. Altere o arquivo /client/vite.config.ts
@@ -156,7 +156,7 @@ VALUES ('Usuário administrador', '111.111.111-11', 'admin@hotmail.com', 'senha 
     $ npx prisma migrate dev
     ```
 
-4. Para usar a aplicação é necessário ter um usuário admnistrador inicial registrado no banco de dados. Para isso, faça os seguintes passos. Acesse o postgres:
+4. Para usar a aplicação é necessário ter um usuário administrador inicial registrado no banco de dados. Para isso, faça os seguintes passos. Acesse o postgres:
 ```sh
 $ sudo -u postgres psql
 ```
