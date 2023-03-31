@@ -19,7 +19,7 @@ import { AuthActionsTypes } from '../../store/features/auth/auth.types';
 
 export const Login: React.FunctionComponent = () => {
 	const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
-	const { request, loading, previousType, } = useTypedSelector((state) => state.auth);
+	const { request, previousType, } = useTypedSelector((state) => state.auth);
 	const theme = useTheme() as Theme;
 
 	const getPasswordVisibilityButton = (name): any => {

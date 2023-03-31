@@ -9,7 +9,7 @@ COPY tsconfig.json ./
 
 COPY . .
 
-RUN npm install
+RUN npm install --verbose
 RUN npx prisma generate
 
 EXPOSE 9000

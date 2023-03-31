@@ -33,7 +33,7 @@ services:
 
   client:
     build: ./client
-    container_name: esports-management-client
+    container_name: companies-management-client
     ports:
       - '3000:3000'
 volumes:

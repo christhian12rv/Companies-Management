@@ -8,11 +8,14 @@ import eslint from 'vite-plugin-eslint';
 export default defineConfig({
 	plugins: [react(), viteTsconfigPaths(), svgrPlugin(), eslint()],
 	server: {
-		open: true,
+		host: true,
 		port: 3000,
 		proxy: {
 			'/api': {
-				target: 'http://localhost:9090/',
+				target: 'http://companies-management-server:9000/',
+				changeOrigin: true,
+				secure: false,
+				ws: true,
 				headers: { 'Content-type': 'application/json; charset=UTF-8', },
 			},
 		},
